@@ -1,0 +1,3 @@
+[submodule "offline-license-key"]
+	path = offline-license-key
+	url = https://github.com/Radiokot/offline-license-key

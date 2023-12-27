@@ -1,0 +1,5 @@
+
+rootProject.name = 'offline-license-key-service'
+
+include ":offline-license-key"
+project(":offline-license-key").projectDir = file("offline-license-key")
