@@ -54,3 +54,8 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_11
 }
+
+// Important for JSONAPI resources.
+sourceSets.main {
+    java.srcDirs("src/main/kotlin")
+}

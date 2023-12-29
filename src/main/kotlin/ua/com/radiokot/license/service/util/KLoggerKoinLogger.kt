@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service.di
+package ua.com.radiokot.license.service.util
 
 import mu.KLogger
 import org.koin.core.logger.Level

@@ -6,12 +6,15 @@ import io.javalin.apibuilder.ApiBuilder.path
 import io.javalin.http.Header
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.environmentProperties
 import sun.misc.Signal
-import ua.com.radiokot.license.service.di.KLoggerKoinLogger
+import ua.com.radiokot.license.service.api.issuers.IssuersController
+import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
+import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
 object Application : KoinComponent {
     @JvmStatic
@@ -25,6 +28,10 @@ object Application : KoinComponent {
             )
 
             environmentProperties()
+
+            modules(
+                issuersApiModule,
+            )
         }
 
         Javalin
@@ -39,6 +46,14 @@ object Application : KoinComponent {
                 path("/") {
                     get { ctx ->
                         ctx.result("Hi there")
+                    }
+                }
+
+                path("v1/") {
+                    path("issuers") {
+                        val controller = get<IssuersController>()
+
+                        get(controller::getIssuers)
                     }
                 }
             }
