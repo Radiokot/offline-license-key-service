@@ -55,6 +55,11 @@ object Application : KoinComponent {
                         get<IssuersController>()::getIssuers
                     )
 
+                    get(
+                        "issuers/{issuerId}",
+                        get<IssuersController>()::getIssuerById
+                    )
+
                     post(
                         "issuers/{issuerId}/issuance",
                         get<IssuanceController>()::issueKey
