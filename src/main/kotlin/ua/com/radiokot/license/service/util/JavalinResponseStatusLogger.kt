@@ -2,16 +2,15 @@ package ua.com.radiokot.license.service.util
 
 import io.javalin.http.Context
 import io.javalin.http.RequestLogger
+import mu.KLogger
 import mu.KotlinLogging
 
 class JavalinResponseStatusLogger(
-    name: String = "API"
+    private val kLogger: KLogger = KotlinLogging.logger("API")
 ) : RequestLogger {
-    private val logger = KotlinLogging.logger(name)
-
     override fun handle(ctx: Context, executionTimeMs: Float) {
         if (executionTimeMs < 1000) {
-            logger.info {
+            kLogger.info {
                 "response: " +
                         "method=${ctx.method()}, " +
                         "uri=${ctx.req().requestURI}, " +
@@ -20,7 +19,7 @@ class JavalinResponseStatusLogger(
                         "timeMs=$executionTimeMs"
             }
         } else {
-            logger.warn {
+            kLogger.warn {
                 "slow_response: " +
                         "method=${ctx.method()}, " +
                         "uri=${ctx.req().requestURI}, " +

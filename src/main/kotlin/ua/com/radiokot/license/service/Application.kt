@@ -2,7 +2,9 @@ package ua.com.radiokot.license.service
 
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
+import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
+import io.javalin.http.servlet.HttpResponseExceptionMapper
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -17,6 +19,8 @@ import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
 object Application : KoinComponent {
+    private val apiLog = KotlinLogging.logger("API")
+
     @JvmStatic
     fun main(args: Array<String>) {
         startKoin {
@@ -37,7 +41,11 @@ object Application : KoinComponent {
         Javalin
             .create { config ->
                 config.showJavalinBanner = false
-                config.requestLogger.http(JavalinResponseStatusLogger())
+                config.requestLogger.http(
+                    JavalinResponseStatusLogger(
+                        kLogger = apiLog,
+                    )
+                )
             }
             .after { ctx ->
                 ctx.header(Header.SERVER, "olk-svc")
@@ -65,6 +73,12 @@ object Application : KoinComponent {
                         get<IssuanceController>()::issueKey
                     )
                 }
+            }
+            .exception(BadRequestResponse::class.java) { e, ctx ->
+                apiLog.debug(e) {
+                    "bad_request"
+                }
+                HttpResponseExceptionMapper.handle(e, ctx)
             }
             .start(getKoin().getProperty("PORT", "8041").toInt())
             .apply {

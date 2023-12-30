@@ -7,6 +7,7 @@ import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
+import mu.KotlinLogging
 import ua.com.radiokot.license.OfflineLicenseKeys
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuanceRequestResource
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuedKeyResource
@@ -18,18 +19,38 @@ class IssuanceController(
     private val issuersRepository: IssuersRepository,
     private val resourceConverter: ResourceConverter,
 ) {
+    private val log = KotlinLogging.logger("IssuanceController")
+
     fun issueKey(ctx: Context) = with(ctx) {
         val issuanceRequest = try {
             resourceConverter
                 .readDocument(bodyInputStream(), IssuanceRequestResource::class.java)
                 .get()!!
-        } catch (jsonApiException: InvalidJsonApiResourceException) {
-            throw BadRequestResponse(jsonApiException.message ?: HttpStatus.BAD_REQUEST.message)
+        } catch (e: Exception) {
+            when (e) {
+                is IllegalArgumentException,
+                is InvalidJsonApiResourceException ->
+                    throw BadRequestResponse(e.message ?: HttpStatus.BAD_REQUEST.message)
+                        .also {
+                            log.debug(e) {
+                                "issueKey(): bad_request"
+                            }
+                        }
+
+                else ->
+                    throw e
+            }
         }
 
         val issuerId = pathParam("issuerId")
         val issuer = issuersRepository.getIssuerById(issuerId)
             ?: throw NotFoundResponse("Issuer $issuerId not found")
+                .also {
+                    log.debug {
+                        "issueKey(): issuer_not_found:" +
+                                "\nissuerId=$issuerId"
+                    }
+                }
 
         val issuedKey = OfflineLicenseKeys.jwt
             .factory(
@@ -37,10 +58,20 @@ class IssuanceController(
                 issuer = issuer.name,
             )
             .issue(
-                subject = issuanceRequest.subject,
-                hardware = issuanceRequest.hardware,
-                features = issuanceRequest.features.toSet(),
+                subject = issuanceRequest.subject
+                    ?: throw BadRequestResponse("The request must have subject string attribute"),
+                hardware = issuanceRequest.hardware
+                    ?: throw BadRequestResponse("The request must have hardware string attribute"),
+                features = issuanceRequest.features?.toSet()
+                    ?: throw BadRequestResponse("The request must have features array attribute"),
             )
+
+        log.debug {
+            "issueKey(): key_issued:" +
+                    "\nissuer=${issuedKey.issuer}," +
+                    "\nkey=${issuedKey.encode()}"
+        }
+
         val responseDocument = JSONAPIDocument(IssuedKeyResource(issuedKey.encode()))
 
         status(HttpStatus.OK)
