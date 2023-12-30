@@ -1,8 +1,7 @@
 package ua.com.radiokot.license.service
 
 import io.javalin.Javalin
-import io.javalin.apibuilder.ApiBuilder.get
-import io.javalin.apibuilder.ApiBuilder.path
+import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.Header
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
@@ -13,6 +12,7 @@ import org.koin.environmentProperties
 import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
+import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
@@ -50,11 +50,15 @@ object Application : KoinComponent {
                 }
 
                 path("v1/") {
-                    path("issuers") {
-                        val controller = get<IssuersController>()
+                    get(
+                        "issuers",
+                        get<IssuersController>()::getIssuers
+                    )
 
-                        get(controller::getIssuers)
-                    }
+                    post(
+                        "issuers/{issuerId}/issuance",
+                        get<IssuanceController>()::issueKey
+                    )
                 }
             }
             .start(getKoin().getProperty("PORT", "8041").toInt())

@@ -11,5 +11,9 @@ class RealIssuersRepository(
             .map(::Issuer)
     }
 
-    override fun getIssuers(): List<Issuer> = decodedIssuers
+    override fun getIssuers(): List<Issuer> =
+        decodedIssuers
+
+    override fun getIssuerById(id: String): Issuer? =
+        decodedIssuers.find { it.id == id }
 }

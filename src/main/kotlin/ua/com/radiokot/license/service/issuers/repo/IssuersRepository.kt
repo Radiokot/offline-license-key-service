@@ -4,4 +4,6 @@ import ua.com.radiokot.license.service.issuers.model.Issuer
 
 interface IssuersRepository {
     fun getIssuers(): List<Issuer>
+
+    fun getIssuerById(id: String): Issuer?
 }
