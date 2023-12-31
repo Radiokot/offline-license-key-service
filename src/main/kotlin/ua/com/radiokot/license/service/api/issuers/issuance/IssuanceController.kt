@@ -22,10 +22,15 @@ class IssuanceController(
     private val log = KotlinLogging.logger("IssuanceController")
 
     fun issueKey(ctx: Context) = with(ctx) {
-        val issuanceRequest = try {
-            resourceConverter
+        val issuanceRequest: IssuanceRequestResource
+        val issuanceRequestMeta: Map<String, Any?>?
+
+        try {
+            val requestDocument = resourceConverter
                 .readDocument(bodyInputStream(), IssuanceRequestResource::class.java)
-                .get()!!
+
+            issuanceRequest = requestDocument.get()!!
+            issuanceRequestMeta = requestDocument.meta
         } catch (e: Exception) {
             when (e) {
                 is IllegalArgumentException,
@@ -66,9 +71,11 @@ class IssuanceController(
                     ?: throw BadRequestResponse("The request must have features array attribute"),
             )
 
-        log.debug {
+        log.info {
             "issueKey(): key_issued:" +
                     "\nissuer=${issuedKey.issuer}," +
+                    "\nsubject=${issuedKey.subject}," +
+                    "\nrequestMeta=${issuanceRequestMeta}," +
                     "\nkey=${issuedKey.encode()}"
         }
 
