@@ -10,7 +10,7 @@ class JavalinResponseStatusLogger(
 ) : RequestLogger {
     override fun handle(ctx: Context, executionTimeMs: Float) {
         if (executionTimeMs < 1000) {
-            kLogger.info {
+            kLogger.debug {
                 "response: " +
                         "method=${ctx.method()}, " +
                         "uri=${ctx.req().requestURI}, " +
