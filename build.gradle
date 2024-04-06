@@ -18,10 +18,11 @@ version = '0.0.1'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation project(':offline-license-key')
+    implementation 'ua.com.radiokot:offline-license-key:1.0.0-rc.6'
 
     implementation "io.insert-koin:koin-core:$koin_version"
     testImplementation "io.insert-koin:koin-test:$koin_version"
