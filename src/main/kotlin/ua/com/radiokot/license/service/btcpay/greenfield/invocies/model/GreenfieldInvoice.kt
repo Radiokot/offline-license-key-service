@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service.btcpay.greenfield.invocies
+package ua.com.radiokot.license.service.btcpay.greenfield.invocies.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
@@ -23,6 +23,8 @@ class GreenfieldInvoice(
         val speedPolicy: SpeedPolicy? = null,
         @JsonProperty("redirectURL")
         val redirectUrl: String? = null,
+        @JsonProperty("redirectAutomatically")
+        val redirectAutomatically: Boolean? = null,
     )
 
     class Metadata(

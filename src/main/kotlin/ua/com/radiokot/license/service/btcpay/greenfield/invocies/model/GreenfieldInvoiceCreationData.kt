@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service.btcpay.greenfield.invocies
+package ua.com.radiokot.license.service.btcpay.greenfield.invocies.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
