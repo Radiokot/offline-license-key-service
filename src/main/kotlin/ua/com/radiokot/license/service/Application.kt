@@ -15,6 +15,7 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
+import ua.com.radiokot.license.service.btcpay.payment.BtcPayPaymentMethodController
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
@@ -71,6 +72,13 @@ object Application : KoinComponent {
                     post(
                         "issuers/{issuerId}/issuance",
                         get<IssuanceController>()::issueKey
+                    )
+                }
+
+                path("checkout/") {
+                    get(
+                        "btcpay/{orderId}",
+                        get<BtcPayPaymentMethodController>()::checkout
                     )
                 }
             }
