@@ -2,21 +2,20 @@ package ua.com.radiokot.license.service.btcpay.payment
 
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
-import io.javalin.http.HttpStatus
 import io.javalin.http.NotFoundResponse
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldStoreInvoicesService
-import ua.com.radiokot.license.service.orders.OrderRepository
+import ua.com.radiokot.license.service.orders.OrdersRepository
 
 typealias BtcPayInvoiceUrlFactory = (invoiceId: String) -> String
 
 class BtcPayPaymentMethodController(
     private val invoiceUrlFactory: BtcPayInvoiceUrlFactory,
-    private val orderRepository: OrderRepository,
+    private val ordersRepository: OrdersRepository,
     private val greenfieldStoreInvoicesService: GreenfieldStoreInvoicesService,
 ) {
     fun checkout(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
-        val order = orderRepository.getOrderById(orderId)
+        val order = ordersRepository.getOrderById(orderId)
             ?: throw NotFoundResponse("Order '$orderId' not found")
 
         if (order.paymentMethodId != BTCPAY_PAYMENT_METHOD_ID) {

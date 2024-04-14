@@ -2,7 +2,7 @@ package ua.com.radiokot.license.service.orders
 
 import java.math.BigDecimal
 
-interface OrderRepository {
+interface OrdersRepository {
     fun createOrder(
         id: String,
         paymentMethodId: String,

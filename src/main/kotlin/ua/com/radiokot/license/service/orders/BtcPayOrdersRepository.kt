@@ -10,12 +10,12 @@ import java.math.BigDecimal
 
 typealias OrderUrlFactory = (orderId: String) -> String
 
-class BtcPayOrderRepository(
+class BtcPayOrdersRepository(
     private val orderUrlFactory: OrderUrlFactory,
     private val speedPolicy: GreenfieldInvoice.SpeedPolicy,
     private val greenfieldStoreInvoicesService: GreenfieldStoreInvoicesService,
     private val jsonObjectMapper: ObjectMapper,
-) : OrderRepository {
+) : OrdersRepository {
     override fun createOrder(
         id: String,
         paymentMethodId: String,
