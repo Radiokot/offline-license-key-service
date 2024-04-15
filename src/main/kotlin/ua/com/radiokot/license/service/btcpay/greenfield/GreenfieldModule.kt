@@ -9,15 +9,16 @@ import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldInvo
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldStoreInvoicesService
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.RealGreenfieldStoreInvoicesService
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
+import ua.com.radiokot.license.service.ioModule
 import ua.com.radiokot.license.service.jsonapi.di.jsonApiModule
 
 val greenfieldModule = module {
-    includes(jsonApiModule)
+    includes(ioModule)
 
     single {
         Retrofit.Builder()
             .baseUrl(getNotEmptyProperty("GREENFIELD_BASE_URL"))
-            .client(OkHttpClient.Builder().build())
+            .client(get())
             .addConverterFactory(JacksonConverterFactory.create(get()))
             .build()
             .create(GreenfieldInvoicesApi::class.java)

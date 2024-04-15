@@ -9,12 +9,10 @@ import org.koin.dsl.module
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuanceRequestResource
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuedKeyResource
 import ua.com.radiokot.license.service.api.issuers.model.IssuerResource
+import ua.com.radiokot.license.service.ioModule
 
 val jsonApiModule = module {
-    single {
-        jacksonObjectMapper()
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-    } bind ObjectMapper::class
+    includes(ioModule)
 
     single {
         ResourceConverter(

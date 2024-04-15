@@ -1,0 +1,31 @@
+package ua.com.radiokot.license.service
+
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import okhttp3.OkHttpClient
+import org.koin.dsl.bind
+import org.koin.dsl.module
+import java.util.concurrent.TimeUnit
+
+val ioModule = module {
+    single {
+        jacksonObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    } bind ObjectMapper::class
+
+    factory {
+        OkHttpClient.Builder()
+            // Connect timeout to cut off dead network.
+            .connectTimeout(30, TimeUnit.SECONDS)
+            // Read and write timeouts are big because PhotoPrism
+            // may run really slow on low-power servers.
+            .readTimeout(1, TimeUnit.MINUTES)
+            .writeTimeout(1, TimeUnit.MINUTES)
+    } bind OkHttpClient.Builder::class
+
+    single {
+        get<OkHttpClient.Builder>()
+            .build()
+    } bind OkHttpClient::class
+}

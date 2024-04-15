@@ -15,7 +15,6 @@ val btcPayPaymentMethodModule = module {
                 getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL")
                     .toHttpUrl()
                     .newBuilder()
-                    .addPathSegment("i")
                     .addPathSegment(invoiceId)
                     .build()
                     .toString()
