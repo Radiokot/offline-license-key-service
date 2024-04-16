@@ -87,12 +87,10 @@ object Application : KoinComponent {
                     )
                 }
 
-                path("checkout/") {
-                    get(
-                        "btcpay/{orderId}",
-                        get<BtcPayPaymentMethodController>()::checkout
-                    )
-                }
+                get(
+                    "checkout/${BtcPayPaymentMethodController.PAYMENT_METHOD_ID}/{orderId}",
+                    get<BtcPayPaymentMethodController>()::checkout,
+                )
             }
             .exception(BadRequestResponse::class.java) { e, ctx ->
                 apiLog.debug(e) {

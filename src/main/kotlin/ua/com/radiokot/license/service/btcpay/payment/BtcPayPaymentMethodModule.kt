@@ -11,7 +11,8 @@ val btcPayPaymentMethodModule = module {
 
     single {
         BtcPayPaymentMethodController(
-            invoiceUrlFactory = {invoiceId ->
+            storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
+            invoiceUrlFactory = { invoiceId ->
                 getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL")
                     .toHttpUrl()
                     .newBuilder()
@@ -20,7 +21,7 @@ val btcPayPaymentMethodModule = module {
                     .toString()
             },
             ordersRepository = get(),
-            greenfieldStoreInvoicesService = get(),
+            greenfieldInvoicesApi = get(),
         )
     } bind BtcPayPaymentMethodController::class
 

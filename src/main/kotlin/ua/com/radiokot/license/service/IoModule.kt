@@ -6,6 +6,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.OkHttpClient
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.jackson.JacksonConverterFactory
+import ua.com.radiokot.license.service.util.SyncCallAdapter
 import java.util.concurrent.TimeUnit
 
 val ioModule = module {
@@ -28,4 +31,10 @@ val ioModule = module {
         get<OkHttpClient.Builder>()
             .build()
     } bind OkHttpClient::class
+
+    factory {
+        Retrofit.Builder()
+            .addCallAdapterFactory(SyncCallAdapter.Factory)
+            .addConverterFactory(JacksonConverterFactory.create(get()))
+    } bind Retrofit.Builder::class
 }

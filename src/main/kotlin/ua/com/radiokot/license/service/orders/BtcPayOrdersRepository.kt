@@ -3,7 +3,7 @@ package ua.com.radiokot.license.service.orders
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.io.BigDecimalParser
 import com.fasterxml.jackson.databind.ObjectMapper
-import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldStoreInvoicesService
+import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldInvoicesApi
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoiceCreationData
 import java.math.BigDecimal
@@ -11,9 +11,10 @@ import java.math.BigDecimal
 typealias OrderUrlFactory = (orderId: String) -> String
 
 class BtcPayOrdersRepository(
+    private val storeId: String,
     private val orderUrlFactory: OrderUrlFactory,
     private val speedPolicy: GreenfieldInvoice.SpeedPolicy,
-    private val greenfieldStoreInvoicesService: GreenfieldStoreInvoicesService,
+    private val greenfieldInvoicesApi: GreenfieldInvoicesApi,
     private val jsonObjectMapper: ObjectMapper,
 ) : OrdersRepository {
     override fun createOrder(
@@ -28,8 +29,9 @@ class BtcPayOrdersRepository(
             "Order with id '$id' already exists"
         }
 
-        return greenfieldStoreInvoicesService.createInvoice(
-            GreenfieldInvoiceCreationData(
+        return greenfieldInvoicesApi.createInvoice(
+            storeId = storeId,
+            creationData = GreenfieldInvoiceCreationData(
                 amount = amount.toPlainString(),
                 currency = currency,
                 checkout = GreenfieldInvoice.CheckoutData(
@@ -52,7 +54,8 @@ class BtcPayOrdersRepository(
     }
 
     override fun getOrderById(orderId: String): Order? =
-        greenfieldStoreInvoicesService.getInvoices(
+        greenfieldInvoicesApi.getInvoices(
+            storeId = storeId,
             orderId = setOf(orderId),
         ).firstOrNull()?.toOrder()
 
