@@ -15,10 +15,11 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
-import ua.com.radiokot.license.service.btcpay.payment.BtcPayPaymentMethodController
-import ua.com.radiokot.license.service.btcpay.payment.btcPayPaymentMethodModule
 import ua.com.radiokot.license.service.orders.OrdersController
 import ua.com.radiokot.license.service.orders.ordersModule
+import ua.com.radiokot.license.service.payment.BtcPayPaymentMethodController
+import ua.com.radiokot.license.service.payment.ManualCheckoutPaymentMethodController
+import ua.com.radiokot.license.service.payment.paymentMethodsModule
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
@@ -39,7 +40,7 @@ object Application : KoinComponent {
 
             modules(
                 issuersApiModule,
-                btcPayPaymentMethodModule,
+                paymentMethodsModule,
                 ordersModule,
             )
         }
@@ -90,6 +91,11 @@ object Application : KoinComponent {
                 get(
                     "checkout/${BtcPayPaymentMethodController.PAYMENT_METHOD_ID}/{orderId}",
                     get<BtcPayPaymentMethodController>()::checkout,
+                )
+
+                get(
+                    "checkout/${ManualCheckoutPaymentMethodController.PAYMENT_METHOD_ID}/{orderId}",
+                    get<ManualCheckoutPaymentMethodController>()::checkout,
                 )
             }
             .exception(BadRequestResponse::class.java) { e, ctx ->

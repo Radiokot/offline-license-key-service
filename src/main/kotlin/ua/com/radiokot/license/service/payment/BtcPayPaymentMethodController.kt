@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service.btcpay.payment
+package ua.com.radiokot.license.service.payment
 
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
