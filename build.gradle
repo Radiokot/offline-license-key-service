@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'ua.com.radiokot:offline-license-key:1.0.0-rc.6'
+    implementation 'ua.com.radiokot:offline-license-key:1.0.0'
 
     implementation "io.insert-koin:koin-core:$koin_version"
     testImplementation "io.insert-koin:koin-test:$koin_version"
@@ -41,6 +41,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.11.0'
 
     implementation 'io.javalin:javalin:5.4.2'
+    implementation 'io.javalin:javalin-rendering:5.4.2'
+    implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
+
     implementation 'com.github.jasminb:jsonapi-converter:0.12'
 
     testImplementation "junit:junit:4.13.2"

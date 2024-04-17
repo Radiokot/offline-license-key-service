@@ -1,0 +1,19 @@
+<html>
+<body>
+<h3>Your order</h3>
+<form>
+    <input hidden name="hardware" value="223fab232"/>
+    <input hidden name="features" value="1">
+    <label>Your email: <input required name="email" type="email"/></label>
+    <br>
+    <label>Hardware: <span>223fab232</span></label>
+    <br>
+    <label>Extensions: <span>TEST Feature</span></label>
+    <br>
+    <label>Price: <span data-th-text="${price}">X USD</span></label>
+    <br><br>
+    <input type="submit" data-th-formaction="${createBtcPayOrderUrl}" formmethod="post" value="Pay with Bitcoin or Lightning" />
+    <input type="submit" data-th-formaction="${createManualCheckoutOrderUrl}" formmethod="post" value="Use other payment method" />
+</form>
+</body>
+</html>

@@ -1,6 +1,5 @@
 package ua.com.radiokot.license.service.payment
 
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -14,12 +13,7 @@ val paymentMethodsModule = module {
         BtcPayPaymentMethodController(
             storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
             invoiceUrlFactory = { invoiceId ->
-                getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL")
-                    .toHttpUrl()
-                    .newBuilder()
-                    .addPathSegment(invoiceId)
-                    .build()
-                    .toString()
+                getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL").trimEnd('/') + invoiceId
             },
             ordersRepository = get(),
             greenfieldInvoicesApi = get(),

@@ -12,7 +12,7 @@ typealias OrderUrlFactory = (orderId: String) -> String
 
 class BtcPayOrdersRepository(
     private val storeId: String,
-    private val orderUrlFactory: OrderUrlFactory,
+    private val absoluteOrderUrlFactory: OrderUrlFactory,
     private val speedPolicy: GreenfieldInvoice.SpeedPolicy,
     private val greenfieldInvoicesApi: GreenfieldInvoicesApi,
     private val jsonObjectMapper: ObjectMapper,
@@ -36,7 +36,7 @@ class BtcPayOrdersRepository(
                 currency = currency,
                 checkout = GreenfieldInvoice.CheckoutData(
                     speedPolicy = speedPolicy,
-                    redirectUrl = orderUrlFactory(id),
+                    redirectUrl = absoluteOrderUrlFactory(id),
                     redirectAutomatically = true,
                 ),
                 metadata = GreenfieldInvoice.Metadata(

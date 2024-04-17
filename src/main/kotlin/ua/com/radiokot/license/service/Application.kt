@@ -5,6 +5,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
 import io.javalin.http.servlet.HttpResponseExceptionMapper
+import io.javalin.rendering.template.JavalinThymeleaf
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -53,16 +54,16 @@ object Application : KoinComponent {
                         kLogger = apiLog,
                     )
                 )
+                config.fileRenderer(JavalinThymeleaf())
             }
             .after { ctx ->
                 ctx.header(Header.SERVER, "olk-svc")
             }
             .routes {
-                path("/") {
-                    get { ctx ->
-                        ctx.result("Hi there")
-                    }
-                }
+                get(
+                    "/",
+                    TestPageRenderer()::render
+                )
 
                 path("v1/") {
                     get(
@@ -86,6 +87,8 @@ object Application : KoinComponent {
                         "{orderId}",
                         get<OrdersController>()::getOrderById
                     )
+
+                    post(get<OrdersController>()::createOrder)
                 }
 
                 get(

@@ -13,5 +13,6 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `GREENFIELD_AUTHORIZATION` | BTCPay Greenfield authorization value (`Token XXXXX`)                            |
 | `BTCPAY_STORE_ID`          | BTCPay store ID                                                                  |
 | `BTCPAY_INVOICE_BASE_URL`  | Absolute base URL of the public BTCPay invoice endpoint                          |
+| `PUBLIC_BASE_URL`          | Absolute base URL of the service                                                 |
 
 See `test_private_key.pem` and `test_public_key.pem` as format example. 

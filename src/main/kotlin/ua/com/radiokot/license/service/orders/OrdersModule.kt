@@ -16,8 +16,9 @@ val ordersModule = module {
     single {
         BtcPayOrdersRepository(
             storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
-            orderUrlFactory = { orderId ->
-                "/orders/$orderId"
+            absoluteOrderUrlFactory = { orderId ->
+                getNotEmptyProperty("PUBLIC_BASE_URL").trimEnd('/') +
+                        "/orders/$orderId"
             },
             speedPolicy = GreenfieldInvoice.SpeedPolicy.HIGH,
             greenfieldInvoicesApi = get(),
