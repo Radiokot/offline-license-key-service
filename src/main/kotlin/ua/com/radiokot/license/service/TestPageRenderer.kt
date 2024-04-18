@@ -7,7 +7,7 @@ import ua.com.radiokot.license.service.payment.ManualCheckoutPaymentMethodContro
 class TestPageRenderer {
     fun render(ctx: Context) = with(ctx) {
         render(
-            "web/test.html", mapOf(
+            "test.html", mapOf(
                 "price" to "10 USD",
                 "createBtcPayOrderUrl" to "/orders?method=${BtcPayPaymentMethodController.PAYMENT_METHOD_ID}",
                 "createManualCheckoutOrderUrl" to "/orders?method=${ManualCheckoutPaymentMethodController.PAYMENT_METHOD_ID}",

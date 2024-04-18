@@ -12,6 +12,10 @@ import org.koin.core.component.get
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.environmentProperties
+import org.thymeleaf.TemplateEngine
+import org.thymeleaf.messageresolver.StandardMessageResolver
+import org.thymeleaf.templatemode.TemplateMode
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
@@ -54,7 +58,16 @@ object Application : KoinComponent {
                         kLogger = apiLog,
                     )
                 )
-                config.fileRenderer(JavalinThymeleaf())
+                config.http.defaultContentType = "text/plain; charset=utf-8"
+
+                JavalinThymeleaf.init(TemplateEngine().apply {
+                    setTemplateResolver(ClassLoaderTemplateResolver().apply {
+                        templateMode = TemplateMode.HTML
+                        prefix = "/frontend/"
+                        characterEncoding = "UTF-8"
+                    })
+                    setMessageResolver(StandardMessageResolver())
+                })
             }
             .after { ctx ->
                 ctx.header(Header.SERVER, "olk-svc")
