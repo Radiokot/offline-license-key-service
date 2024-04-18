@@ -20,6 +20,7 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
+import ua.com.radiokot.license.service.features.featuresModule
 import ua.com.radiokot.license.service.orders.OrdersController
 import ua.com.radiokot.license.service.orders.ordersModule
 import ua.com.radiokot.license.service.payment.BtcPayPaymentMethodController
@@ -47,6 +48,7 @@ object Application : KoinComponent {
                 issuersApiModule,
                 paymentMethodsModule,
                 ordersModule,
+                featuresModule,
             )
         }
 

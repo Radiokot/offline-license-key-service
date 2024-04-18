@@ -5,12 +5,14 @@ import org.koin.dsl.module
 import ua.com.radiokot.license.service.btcpay.greenfield.greenfieldModule
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
+import ua.com.radiokot.license.service.features.featuresModule
 import ua.com.radiokot.license.service.jsonapi.di.jsonApiModule
 
 val ordersModule = module {
     includes(
         greenfieldModule,
         jsonApiModule,
+        featuresModule,
     )
 
     single {
@@ -32,6 +34,7 @@ val ordersModule = module {
                 "/checkout/$paymentMethodId/$orderId"
             },
             ordersRepository = get(),
+            featuresRepository = get(),
         )
     } bind OrdersController::class
 }

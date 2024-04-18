@@ -3,6 +3,7 @@ package ua.com.radiokot.license.service.orders
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
+import ua.com.radiokot.license.service.features.FeaturesRepository
 import java.math.BigDecimal
 
 typealias OrderCheckoutUrlFactory = (
@@ -13,6 +14,7 @@ typealias OrderCheckoutUrlFactory = (
 class OrdersController(
     private val orderCheckoutUrlFactory: OrderCheckoutUrlFactory,
     private val ordersRepository: OrdersRepository,
+    private val featuresRepository: FeaturesRepository,
 ) {
     fun getOrderById(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
@@ -32,13 +34,27 @@ class OrdersController(
     }
 
     fun createOrder(ctx: Context) = with(ctx) {
-        val email = formParam("email")?.takeIf(String::isNotEmpty)
+        val email = formParam("email")
+            ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing email")
-        val hardware = formParam("hardware")?.takeIf(String::isNotEmpty)
+
+        val hardware = formParam("hardware")
+            ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing hardware")
-        val features = formParam("features")?.takeIf(String::isNotEmpty)
+
+        val features = formParam("features")
+            ?.takeIf(String::isNotEmpty)
+            ?.split(',')
+            ?.mapNotNullTo(mutableSetOf(), String::toIntOrNull)
+            ?.takeIf(Collection<*>::isNotEmpty)
+            ?.map { featureIndex ->
+                featuresRepository[featureIndex]
+                    ?: throw BadRequestResponse("Feature '$featureIndex' is unknown")
+            }
             ?: throw BadRequestResponse("Missing features")
-        val paymentMethod = queryParam("method")?.takeIf(String::isNotEmpty)
+
+        val paymentMethod = queryParam("method")
+            ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing payment method")
 
         val createdOrder = ordersRepository.createOrder(
@@ -47,7 +63,7 @@ class OrdersController(
             amount = BigDecimal.TEN,
             currency = "USD",
             buyerEmail = email,
-            encodedKey = features,
+            encodedKey = "My key: $features|$hardware",
         )
 
         redirect(orderCheckoutUrlFactory(createdOrder.id, createdOrder.paymentMethodId))
