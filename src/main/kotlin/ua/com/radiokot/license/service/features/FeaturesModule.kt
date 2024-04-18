@@ -6,4 +6,6 @@ import org.koin.dsl.module
 
 val featuresModule = module {
     singleOf(::HardcodedFeaturesRepository) bind FeaturesRepository::class
+
+    singleOf(::FeaturesController) bind FeaturesController::class
 }

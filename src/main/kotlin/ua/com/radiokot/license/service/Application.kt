@@ -20,6 +20,7 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
+import ua.com.radiokot.license.service.features.FeaturesController
 import ua.com.radiokot.license.service.features.featuresModule
 import ua.com.radiokot.license.service.orders.OrdersController
 import ua.com.radiokot.license.service.orders.ordersModule
@@ -62,6 +63,15 @@ object Application : KoinComponent {
                 )
                 config.http.defaultContentType = "text/plain; charset=utf-8"
 
+                config.staticFiles.add { staticFileConfig ->
+                    staticFileConfig.directory = "/frontend/css"
+                    staticFileConfig.hostedPath = "/css"
+                }
+                config.staticFiles.add { staticFileConfig ->
+                    staticFileConfig.directory = "/frontend/js"
+                    staticFileConfig.hostedPath = "/js"
+                }
+
                 JavalinThymeleaf.init(TemplateEngine().apply {
                     setTemplateResolver(ClassLoaderTemplateResolver().apply {
                         templateMode = TemplateMode.HTML
@@ -77,7 +87,12 @@ object Application : KoinComponent {
             .routes {
                 get(
                     "/",
-                    TestPageRenderer()::render
+                    get<FeaturesController>()::render
+                )
+
+                get(
+                    "/test",
+                    TestPageController()::render
                 )
 
                 path("v1/") {

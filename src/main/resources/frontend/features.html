@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-th-lang="#{lang}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title data-th-text="#{title}">Title</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="css/mdb.min.css" />
+</head>
+
+<body>
+
+  <!-- Start your project here-->
+  <div class="container">
+
+    <div class="my-4 p-4 bg-body-tertiary rounded-3">
+      <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
+      <p class="col-md-8 fs-4" data-th-text="#{welcome_message}">Welcome message</p>
+    </div>
+
+    <br>
+
+    <div class="row justify-content-center justify-content-md-start">
+      <div class="col-8 col-sm-6 col-md-4" th:each="feature : ${features}">
+        <div class="card">
+          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top"
+            data-th-alt="${feature.name}" data-th-src="${feature.bannerUrl}"/>
+          <div class="card-body">
+            <h5 class="card-title" data-th-text="${feature.name}">Feature name</h5>
+            <p class="card-text" data-th-text="${feature.description}">Feature description</p>
+            <div class="d-flex justify-content-between">
+              <strong class="fs-4">$ <span data-th-text="${feature.price}">123</span></strong>
+              <a href="#!" class="btn btn-primary" data-th-text="#{buy}">Buy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End your project here-->
+
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.umd.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript"></script>
+</body>
+
+</html>

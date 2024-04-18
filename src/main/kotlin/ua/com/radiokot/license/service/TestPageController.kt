@@ -4,7 +4,7 @@ import io.javalin.http.Context
 import ua.com.radiokot.license.service.payment.BtcPayPaymentMethodController
 import ua.com.radiokot.license.service.payment.ManualCheckoutPaymentMethodController
 
-class TestPageRenderer {
+class TestPageController {
     fun render(ctx: Context) = with(ctx) {
         render(
             "test.html", mapOf(
