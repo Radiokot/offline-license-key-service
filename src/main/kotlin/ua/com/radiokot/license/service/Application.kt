@@ -71,6 +71,10 @@ object Application : KoinComponent {
                     staticFileConfig.directory = "/frontend/js"
                     staticFileConfig.hostedPath = "/js"
                 }
+                config.staticFiles.add { staticFileConfig ->
+                    staticFileConfig.directory = "/frontend/img"
+                    staticFileConfig.hostedPath = "/img"
+                }
 
                 JavalinThymeleaf.init(TemplateEngine().apply {
                     setTemplateResolver(ClassLoaderTemplateResolver().apply {
@@ -88,6 +92,11 @@ object Application : KoinComponent {
                 get(
                     "/",
                     get<FeaturesController>()::render
+                )
+
+                get(
+                    "/buy",
+                    BuyPageController(get())::render,
                 )
 
                 get(

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-th-lang="#{lang}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title data-th-text="#{title}">Title</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" data-th-href="@{/css/mdb.min.css}" href="css/mdb.min.css" />
+  <style>
+    #content {
+      max-width: 1024px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Start your project here-->
+  <div class="container">
+    <div id="content" class="mx-auto px-2 pt-2 pt-md-4 pb-4">
+      <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
+
+      <br><br>
+
+      <h3 data-th-text="#{title}">Title</h3>
+
+      <form class="my-4 row">
+        <div class="col-md-6 rounded-6 bg-body-tertiary py-4 px-4">
+          <div class="form-group">
+            <label for="email" data-th-text="#{email_title}">Email title</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@mail.com" required>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="hardware" data-th-text="#{hardware_title}">Hardware title</label>
+            <input type="text" class="form-control" id="hardware" name="hardware" placeholder="Placeholder"
+              data-th-placeholder="#{hardware_placeholder}" required>
+          </div>
+          <br>
+          <div class="form-group">
+            <label data-th-text="#{extension_title}">Extension title</label>
+            <p><b><span data-th-text="${feature.name}">Feature name</span></b></p>
+          </div>
+          <input name="features" data-th-value="${feature.index}" hidden />
+        </div>
+        <div class="col-md-4 py-4 px-4">
+          <h5><span data-th-text="#{to_pay}">To pay:</span> $ <span data-th-text="${feature.price}">5</span></label>
+          <br><br>
+          <button type="submit" class="btn btn-warning btn-block" data-mdb-ripple-init
+            data-th-text="#{pay_with_btc}"
+            data-th-formaction="@{/orders(method=btcpay)}" formmethod="post">BTC</button>
+          <br>
+          <button type="submit" class="btn btn-secondary btn-block" data-mdb-ripple-init
+            data-th-text="#{use_other_payment_method}"
+            data-th-formaction="@{/orders(method=manual)}" formmethod="post">Use other method</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- End your project here-->
+
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.umd.min.js"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript"></script>
+</body>
+
+</html>

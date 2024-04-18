@@ -11,32 +11,42 @@
   <!-- Google Fonts Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
   <!-- MDB -->
-  <link rel="stylesheet" href="css/mdb.min.css" />
+  <link rel="stylesheet" data-th-href="@{/css/mdb.min.css}" href="css/mdb.min.css" />
+  <style>
+    #content {
+      max-width: 1024px;
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- Start your project here-->
   <div class="container">
+    <div id="content" class="mx-auto px-2 pt-2 pt-md-4 pb-4">
+      <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
 
-    <div class="my-4 p-4 bg-body-tertiary rounded-3">
-      <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
-      <p class="col-md-8 fs-4" data-th-text="#{welcome_message}">Welcome message</p>
-    </div>
+      <br><br>
+      <div class="my-4">
+        <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
+        <p class="col-md-8 lead" data-th-text="#{welcome_message}">Welcome message</p>
+      </div>
 
-    <br>
+      <br>
 
-    <div class="row justify-content-center justify-content-md-start">
-      <div class="col-8 col-sm-6 col-md-4" th:each="feature : ${features}">
-        <div class="card">
-          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top"
-            data-th-alt="${feature.name}" data-th-src="${feature.bannerUrl}"/>
-          <div class="card-body">
-            <h5 class="card-title" data-th-text="${feature.name}">Feature name</h5>
-            <p class="card-text" data-th-text="${feature.description}">Feature description</p>
-            <div class="d-flex justify-content-between">
-              <strong class="fs-4">$ <span data-th-text="${feature.price}">123</span></strong>
-              <a href="#!" class="btn btn-primary" data-th-text="#{buy}">Buy</a>
+      <div class="row justify-content-center justify-content-md-start">
+        <div class="col-10 col-sm-6 my-2" th:each="feature : ${features}">
+          <div class="card">
+            <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top"
+              data-th-alt="${feature.name}" data-th-src="${feature.bannerUrl}" />
+            <div class="card-body">
+              <h5 class="card-title" data-th-text="${feature.name}">Feature name</h5>
+              <p class="card-text" data-th-text="${feature.description}">Feature description</p>
+              <div class="d-flex justify-content-between">
+                <strong class="fs-4">$ <span data-th-text="${feature.price}">123</span></strong>
+                <a href="buy.html" data-th-href="@{/buy(f=${feature.index})}" class="btn btn-primary"
+                  data-th-text="#{buy_feature}">Buy</a>
+              </div>
             </div>
           </div>
         </div>
