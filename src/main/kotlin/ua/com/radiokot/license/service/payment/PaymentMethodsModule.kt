@@ -13,7 +13,7 @@ val paymentMethodsModule = module {
         BtcPayPaymentMethodController(
             storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
             invoiceUrlFactory = { invoiceId ->
-                getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL").trimEnd('/') + invoiceId
+                getNotEmptyProperty("BTCPAY_INVOICE_BASE_URL").trimEnd('/') + "/$invoiceId"
             },
             ordersRepository = get(),
             greenfieldInvoicesApi = get(),

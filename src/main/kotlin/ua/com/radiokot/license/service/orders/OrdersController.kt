@@ -3,6 +3,8 @@ package ua.com.radiokot.license.service.orders
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
+import ua.com.radiokot.license.OfflineLicenseKeyFactory
+import ua.com.radiokot.license.service.features.Feature
 import ua.com.radiokot.license.service.features.FeaturesRepository
 import java.math.BigDecimal
 
@@ -15,6 +17,7 @@ class OrdersController(
     private val orderCheckoutUrlFactory: OrderCheckoutUrlFactory,
     private val ordersRepository: OrdersRepository,
     private val featuresRepository: FeaturesRepository,
+    private val keyFactory: OfflineLicenseKeyFactory,
 ) {
     fun getOrderById(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
@@ -57,13 +60,19 @@ class OrdersController(
             ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing payment method")
 
+        val key = keyFactory.issue(
+            subject = email,
+            hardware = hardware,
+            features = features.mapTo(mutableSetOf(), Feature::index),
+        )
+
         val createdOrder = ordersRepository.createOrder(
             id = System.currentTimeMillis().toString(),
             paymentMethodId = paymentMethod,
             amount = BigDecimal.TEN,
             currency = "USD",
             buyerEmail = email,
-            encodedKey = "My key: $features|$hardware",
+            encodedKey = key.encode(),
         )
 
         redirect(orderCheckoutUrlFactory(createdOrder.id, createdOrder.paymentMethodId))
