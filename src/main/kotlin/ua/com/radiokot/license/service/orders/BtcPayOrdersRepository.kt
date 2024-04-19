@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldInvoicesApi
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoiceCreationData
+import ua.com.radiokot.license.service.util.RequestRateLimiter
 import java.math.BigDecimal
 
 typealias OrderUrlFactory = (orderId: String) -> String
@@ -17,6 +18,11 @@ class BtcPayOrdersRepository(
     private val greenfieldInvoicesApi: GreenfieldInvoicesApi,
     private val jsonObjectMapper: ObjectMapper,
 ) : OrdersRepository {
+    private val rateLimiter = RequestRateLimiter(
+        resourceName = "BtcPay",
+        requestTimeoutMs = 1000L,
+    )
+
     override fun createOrder(
         id: String,
         paymentMethodId: String,
@@ -28,6 +34,8 @@ class BtcPayOrdersRepository(
         check(getOrderById(id) == null) {
             "Order with id '$id' already exists"
         }
+
+        rateLimiter.waitBeforeRequest()
 
         return greenfieldInvoicesApi.createInvoice(
             storeId = storeId,
