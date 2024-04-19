@@ -30,7 +30,7 @@ class BtcPayOrdersRepository(
         currency: String,
         buyerEmail: String,
         encodedKey: String
-    ): Order {
+    ): Order = synchronized(this) {
         check(getOrderById(id) == null) {
             "Order with id '$id' already exists"
         }
