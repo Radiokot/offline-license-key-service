@@ -7,7 +7,6 @@ import okio.ByteString.Companion.encodeUtf8
 import ua.com.radiokot.license.OfflineLicenseKeyFactory
 import ua.com.radiokot.license.service.features.Feature
 import ua.com.radiokot.license.service.features.FeaturesRepository
-import java.math.BigDecimal
 
 typealias OrderCheckoutUrlFactory = (
     orderId: String,
@@ -74,7 +73,7 @@ class OrdersController(
         val createdOrder = ordersRepository.createOrder(
             id = reference.encodeUtf8().sha256().hex(),
             paymentMethodId = paymentMethod,
-            amount = BigDecimal.TEN,
+            amount = features.sumOf(Feature::price),
             currency = "USD",
             buyerEmail = email,
             encodedKey = key.encode(),
