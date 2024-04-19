@@ -46,6 +46,7 @@ class BtcPayOrdersRepository(
                     speedPolicy = speedPolicy,
                     redirectUrl = absoluteOrderUrlFactory(id),
                     redirectAutomatically = true,
+                    lazyPaymentMethods = true,
                 ),
                 metadata = GreenfieldInvoice.Metadata(
                     orderId = id,

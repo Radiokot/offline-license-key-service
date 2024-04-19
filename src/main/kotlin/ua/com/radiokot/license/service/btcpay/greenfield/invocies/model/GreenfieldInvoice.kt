@@ -25,6 +25,8 @@ class GreenfieldInvoice(
         val redirectUrl: String? = null,
         @JsonProperty("redirectAutomatically")
         val redirectAutomatically: Boolean? = null,
+        @JsonProperty("lazyPaymentMethods")
+        val lazyPaymentMethods: Boolean? = null,
     )
 
     class Metadata(
