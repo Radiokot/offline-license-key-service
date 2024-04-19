@@ -48,6 +48,7 @@
             <p><b><span data-th-text="${feature.name}">Feature name</span></b></p>
           </div>
           <input name="features" data-th-value="${feature.index}" hidden />
+          <input name="reference" data-th-value="${reference}" hidden />
         </div>
         <div class="col-md-4 py-4 px-4">
           <h5><span data-th-text="#{to_pay}">To pay:</span> $ <span data-th-text="${feature.price}">5</span></label>

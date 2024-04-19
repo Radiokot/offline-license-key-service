@@ -4,6 +4,7 @@ import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 import ua.com.radiokot.license.service.features.FeaturesRepository
+import java.util.*
 
 class BuyPageController(
     private val featuresRepository: FeaturesRepository,
@@ -19,6 +20,7 @@ class BuyPageController(
 
         render("buy.html", mapOf(
             "feature" to feature,
+            "reference" to UUID.randomUUID().toString(),
         ))
     }
 }

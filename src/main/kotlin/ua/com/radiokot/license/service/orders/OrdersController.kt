@@ -3,6 +3,7 @@ package ua.com.radiokot.license.service.orders
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
+import okio.ByteString.Companion.encodeUtf8
 import ua.com.radiokot.license.OfflineLicenseKeyFactory
 import ua.com.radiokot.license.service.features.Feature
 import ua.com.radiokot.license.service.features.FeaturesRepository
@@ -56,6 +57,10 @@ class OrdersController(
             }
             ?: throw BadRequestResponse("Missing features")
 
+        val reference = formParam("reference")
+            ?.takeIf(String::isNotEmpty)
+            ?: throw BadRequestResponse("Missing reference")
+
         val paymentMethod = queryParam("method")
             ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing payment method")
@@ -67,7 +72,7 @@ class OrdersController(
         )
 
         val createdOrder = ordersRepository.createOrder(
-            id = System.currentTimeMillis().toString(),
+            id = reference.encodeUtf8().sha256().hex(),
             paymentMethodId = paymentMethod,
             amount = BigDecimal.TEN,
             currency = "USD",
