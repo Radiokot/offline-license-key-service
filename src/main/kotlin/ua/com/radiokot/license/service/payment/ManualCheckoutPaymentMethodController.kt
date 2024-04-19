@@ -17,9 +17,9 @@ class ManualCheckoutPaymentMethodController(
             throw BadRequestResponse("Order '$orderId' uses different payment method")
         }
 
-        result("""
-            Please, contact me by email or via Telegram providing your order ID: $orderId
-        """.trimIndent())
+        render("manual_checkout.html", mapOf(
+            "orderId" to orderId,
+        ))
     }
 
     companion object {
