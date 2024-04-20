@@ -30,25 +30,13 @@
 
       <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
       <div class="col-md-6 my-4">
-        <p class="lead" data-th-text="#{manual_checkout_explanation}">Manual checkout explanation</p>
+        <p class="lead" data-th-text="#{key_activation_explanation}">Activation explanation</p>
         <br>
-        <label data-th-text="#{order_id_title}">Order ID title</label>
-        <p>
-          <span class="align-middle">
-            <code id="order-id" data-th-text="${orderId}">orderId</code>
-            &nbsp;
-            <button type="button" class="btn btn-light btn-sm" onclick="copyOrderId()" data-th-title="#{copy_order_id}">
-              <i class="fa-regular fa-copy"></i>
-            </button>
-          </span>
-        </p>
-        <br>
-        <a href="mailto:oleg@radiokot.com.ua"
-          data-th-href="@{mailto:oleg@radiokot.com.ua(subject='Buy an extension',body=|Order ID: ${orderId}|)}"
-          class="btn btn-secondary my-2" data-th-text="#{write_a_letter}">Email</a>
-        &nbsp;&nbsp;
-        <a href="https://t.me/radiokot42" class="btn btn-secondary my-2" data-th-text="#{contact_via_telegram}"
-          target="_blank">Telegram</a>
+        <label for="key" data-th-text="#{key_title}">Key title</label>
+        <textarea class="form-control" rows="3" id="key" data-th-text="${encodedKey}" readonly>encoded-key</textarea>
+        <button type="button" class="btn btn-light btn-sm my-2" onclick="copyKey()" data-th-title="#{copy_key}">
+          <i class="fa-regular fa-copy"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -56,9 +44,11 @@
 
   <!-- Custom scripts -->
   <script type="text/javascript">
-    function copyOrderId() {
-      let copyText = document.getElementById("order-id")
-      navigator.clipboard.writeText(copyText.innerText)
+    function copyKey() {
+      copyText = document.getElementById("key")
+      copyText.focus()
+      copyText.select()
+      document.execCommand('copy')
     }
   </script>
 </body>

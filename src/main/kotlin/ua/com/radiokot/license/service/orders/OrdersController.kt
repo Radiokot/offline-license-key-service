@@ -29,7 +29,9 @@ class OrdersController(
                 redirect(orderCheckoutUrlFactory(orderId, order.paymentMethodId))
 
             Order.Status.PAID ->
-                result("Thank you! Your key is: ${order.encodedKey}")
+                render("successful_purchase.html", mapOf(
+                    "encodedKey" to order.encodedKey,
+                ))
 
             Order.Status.CLOSED ->
                 result("This order is closed. Try ordering once again")
