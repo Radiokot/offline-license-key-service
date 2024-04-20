@@ -9,11 +9,9 @@ import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.Greenfie
 import ua.com.radiokot.license.service.util.RequestRateLimiter
 import java.math.BigDecimal
 
-typealias OrderUrlFactory = (orderId: String) -> String
-
 class BtcPayOrdersRepository(
     private val storeId: String,
-    private val absoluteOrderUrlFactory: OrderUrlFactory,
+    private val orderAbsoluteUrlFactory: OrderAbsoluteUrlFactory,
     private val speedPolicy: GreenfieldInvoice.SpeedPolicy,
     private val greenfieldInvoicesApi: GreenfieldInvoicesApi,
     private val jsonObjectMapper: ObjectMapper,
@@ -44,7 +42,7 @@ class BtcPayOrdersRepository(
                 currency = currency,
                 checkout = GreenfieldInvoice.CheckoutData(
                     speedPolicy = speedPolicy,
-                    redirectUrl = absoluteOrderUrlFactory(id),
+                    redirectUrl = orderAbsoluteUrlFactory.getOrderAbsoluteUrl(id),
                     redirectAutomatically = true,
                     lazyPaymentMethods = true,
                 ),

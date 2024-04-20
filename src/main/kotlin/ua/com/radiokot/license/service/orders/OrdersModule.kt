@@ -1,6 +1,7 @@
 package ua.com.radiokot.license.service.orders
 
 import org.koin.dsl.bind
+import org.koin.dsl.binds
 import org.koin.dsl.module
 import ua.com.radiokot.license.OfflineLicenseKeys
 import ua.com.radiokot.license.service.btcpay.greenfield.greenfieldModule
@@ -10,6 +11,8 @@ import ua.com.radiokot.license.service.features.featuresModule
 import ua.com.radiokot.license.service.issuers.di.issuersModule
 import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
 import ua.com.radiokot.license.service.jsonapi.di.jsonApiModule
+import ua.com.radiokot.license.service.orders.notifications.MailjetOrderNotificationsManager
+import ua.com.radiokot.license.service.orders.notifications.OrderNotificationsManager
 import java.security.interfaces.RSAPrivateKey
 
 val ordersModule = module {
@@ -21,17 +24,35 @@ val ordersModule = module {
     )
 
     single {
+        OrderAbsoluteUrlFactory { orderId ->
+            getNotEmptyProperty("PUBLIC_BASE_URL").trimEnd('/') +
+                    "/orders/$orderId"
+        }
+    } bind OrderAbsoluteUrlFactory::class
+
+    single {
         BtcPayOrdersRepository(
             storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
-            absoluteOrderUrlFactory = { orderId ->
-                getNotEmptyProperty("PUBLIC_BASE_URL").trimEnd('/') +
-                        "/orders/$orderId"
-            },
+            orderAbsoluteUrlFactory = get(),
             speedPolicy = GreenfieldInvoice.SpeedPolicy.HIGH,
             greenfieldInvoicesApi = get(),
             jsonObjectMapper = get(),
         )
     } bind OrdersRepository::class
+
+    if (System.getenv("MAILJET_ORDER_NOTIFICATIONS") != null) {
+        factory {
+            MailjetOrderNotificationsManager(
+                senderEmail = getNotEmptyProperty("MAILJET_SENDER_EMAIL"),
+                senderName = getNotEmptyProperty("MAILJET_SENDER_NAME"),
+                pendingOrderTemplateId = getNotEmptyProperty("MAILJET_PENDING_ORDER_TEMPLATE_ID").toLong(),
+                apiKey = getNotEmptyProperty("MAILJET_API_KEY"),
+                apiSecretKey = getNotEmptyProperty("MAILJET_API_SECRET_KEY"),
+                orderAbsoluteUrlFactory = get(),
+                httpClient = get(),
+            )
+        } binds arrayOf(OrderNotificationsManager::class)
+    }
 
     single {
         OrdersController(
@@ -47,7 +68,8 @@ val ordersModule = module {
                         issuerPrivateKey = issuer.privateKey as RSAPrivateKey,
                         issuer = issuer.name,
                     )
-                }
+                },
+            orderNotificationsManager = getOrNull(),
         )
     } bind OrdersController::class
 }

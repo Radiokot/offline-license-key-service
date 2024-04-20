@@ -7,6 +7,8 @@ import okio.ByteString.Companion.encodeUtf8
 import ua.com.radiokot.license.OfflineLicenseKeyFactory
 import ua.com.radiokot.license.service.features.Feature
 import ua.com.radiokot.license.service.features.FeaturesRepository
+import ua.com.radiokot.license.service.orders.notifications.OrderNotificationsManager
+import kotlin.concurrent.thread
 
 typealias OrderCheckoutUrlFactory = (
     orderId: String,
@@ -18,6 +20,7 @@ class OrdersController(
     private val ordersRepository: OrdersRepository,
     private val featuresRepository: FeaturesRepository,
     private val keyFactory: OfflineLicenseKeyFactory,
+    private val orderNotificationsManager: OrderNotificationsManager?,
 ) {
     fun getOrderById(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
@@ -86,6 +89,10 @@ class OrdersController(
                 buyerEmail = email,
                 encodedKey = key.encode(),
             )
+
+        thread(isDaemon = true) {
+            orderNotificationsManager?.notifyBuyerOfOrder(order)
+        }
 
         redirect(orderCheckoutUrlFactory(orderId, order.paymentMethodId))
     }
