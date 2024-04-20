@@ -29,9 +29,11 @@ class OrdersController(
                 redirect(orderCheckoutUrlFactory(orderId, order.paymentMethodId))
 
             Order.Status.PAID ->
-                render("successful_purchase.html", mapOf(
-                    "encodedKey" to order.encodedKey,
-                ))
+                render(
+                    "successful_purchase.html", mapOf(
+                        "encodedKey" to order.encodedKey,
+                    )
+                )
 
             Order.Status.CLOSED ->
                 result("This order is closed. Try ordering once again")
@@ -58,8 +60,11 @@ class OrdersController(
             }
             ?: throw BadRequestResponse("Missing features")
 
-        val reference = formParam("reference")
+        val orderId = formParam("reference")
             ?.takeIf(String::isNotEmpty)
+            ?.encodeUtf8()
+            ?.sha256()
+            ?.hex()
             ?: throw BadRequestResponse("Missing reference")
 
         val paymentMethod = queryParam("method")
@@ -72,15 +77,16 @@ class OrdersController(
             features = features.mapTo(mutableSetOf(), Feature::index),
         )
 
-        val createdOrder = ordersRepository.createOrder(
-            id = reference.encodeUtf8().sha256().hex(),
-            paymentMethodId = paymentMethod,
-            amount = features.sumOf(Feature::price),
-            currency = "USD",
-            buyerEmail = email,
-            encodedKey = key.encode(),
-        )
+        val order = ordersRepository.getOrderById(orderId)
+            ?: ordersRepository.createOrder(
+                id = orderId,
+                paymentMethodId = paymentMethod,
+                amount = features.sumOf(Feature::price),
+                currency = "USD",
+                buyerEmail = email,
+                encodedKey = key.encode(),
+            )
 
-        redirect(orderCheckoutUrlFactory(createdOrder.id, createdOrder.paymentMethodId))
+        redirect(orderCheckoutUrlFactory(orderId, order.paymentMethodId))
     }
 }
