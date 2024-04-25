@@ -4,7 +4,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import ua.com.radiokot.license.OfflineLicenseKeys
-import ua.com.radiokot.license.service.btcpay.greenfield.greenfieldModule
+import ua.com.radiokot.license.service.btcpay.btcPayModule
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
 import ua.com.radiokot.license.service.features.featuresModule
@@ -17,7 +17,7 @@ import java.security.interfaces.RSAPrivateKey
 
 val ordersModule = module {
     includes(
-        greenfieldModule,
+        btcPayModule,
         jsonApiModule,
         featuresModule,
         issuersModule,

@@ -5,6 +5,7 @@ import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
 import io.javalin.http.servlet.HttpResponseExceptionMapper
+import io.javalin.json.JavalinJackson
 import io.javalin.rendering.template.JavalinThymeleaf
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
@@ -20,6 +21,7 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.issuers.IssuersController
 import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
+import ua.com.radiokot.license.service.btcpay.webhook.BtcPayWebhookController
 import ua.com.radiokot.license.service.features.FeaturesController
 import ua.com.radiokot.license.service.features.featuresModule
 import ua.com.radiokot.license.service.orders.OrdersController
@@ -62,6 +64,7 @@ object Application : KoinComponent {
                     )
                 )
                 config.http.defaultContentType = "text/plain; charset=utf-8"
+                config.jsonMapper(JavalinJackson(get()))
 
                 config.staticFiles.add { staticFileConfig ->
                     staticFileConfig.directory = "/frontend/css"
@@ -95,13 +98,8 @@ object Application : KoinComponent {
                 )
 
                 get(
-                    "/buy",
+                    "buy",
                     BuyPageController(get())::render,
-                )
-
-                get(
-                    "/test",
-                    TestPageController()::render
                 )
 
                 path("v1/") {
@@ -138,6 +136,11 @@ object Application : KoinComponent {
                 get(
                     "checkout/${ManualCheckoutPaymentMethodController.PAYMENT_METHOD_ID}/{orderId}",
                     get<ManualCheckoutPaymentMethodController>()::checkout,
+                )
+
+                post(
+                    "btcpay-event",
+                    get<BtcPayWebhookController>()::handleEvent,
                 )
             }
             .exception(BadRequestResponse::class.java) { e, ctx ->
