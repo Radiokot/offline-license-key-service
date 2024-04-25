@@ -70,7 +70,6 @@ val ordersModule = module {
                         issuer = issuer.name,
                     )
                 },
-            orderNotificationsManager = getOrNull(),
         )
     } bind OrdersController::class
 }

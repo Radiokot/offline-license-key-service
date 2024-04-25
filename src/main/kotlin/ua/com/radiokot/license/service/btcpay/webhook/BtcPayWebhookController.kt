@@ -66,10 +66,17 @@ class BtcPayWebhookController(
             invoiceId = event.invoiceId,
         ) ?: throw NotFoundException("Order with invoice '${event.invoiceId}' not found")
 
-        if (event.type == BtcPayWebhookEvent.Type.INVOICE_SETTLED) {
-            orderNotificationsManager?.notifyBuyerOfOrder(
-                order = relatedOrder,
-            )
+        when (event.type) {
+            BtcPayWebhookEvent.Type.INVOICE_CREATED,
+            BtcPayWebhookEvent.Type.INVOICE_SETTLED ->
+                orderNotificationsManager?.notifyBuyerOfOrder(relatedOrder)
+
+            else ->
+                log.debug {
+                    "handleEvent(): event_has_unsupported_type:" +
+                            "\ntype=${event.type}," +
+                            "\ninvoiceId=${event.invoiceId}"
+                }
         }
 
         json(

@@ -15,7 +15,7 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `GREENFIELD_AUTHORIZATION` | BTCPay Greenfield authorization value (`Token XXXXX`), invoices permission required |
 | `BTCPAY_STORE_ID`          | BTCPay store ID                                                                     |
 | `BTCPAY_INVOICE_BASE_URL`  | Absolute base URL of the public BTCPay invoice endpoint                             |
-| `BTCPAY_WEBHOOK_SECRET`    | Optional, secret for set up BTCPay webhook                                          |
+| `BTCPAY_WEBHOOK_SECRET`    | Optional, secret for set up BTCPay webhook for invoice creation and settlement      |
 | `PUBLIC_BASE_URL`          | Absolute base URL of the service, for redirects and notifications                   |
 
 ### Notifications
