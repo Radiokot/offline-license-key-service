@@ -13,6 +13,7 @@ class MailjetOrderNotificationsManager(
     senderEmail: String,
     senderName: String,
     private val pendingOrderTemplateId: Long,
+    private val paidOrderTemplateId: Long,
     apiKey: String,
     apiSecretKey: String,
     private val orderAbsoluteUrlFactory: OrderAbsoluteUrlFactory,
@@ -43,7 +44,7 @@ class MailjetOrderNotificationsManager(
                 getPendingOrderEmail(order)
 
             Order.Status.PAID ->
-                TODO()
+                getPaidOrderEmail(order)
 
             Order.Status.CLOSED ->
                 TODO()
@@ -84,6 +85,14 @@ class MailjetOrderNotificationsManager(
             .subject("Order for gallery extension")
             .templateID(pendingOrderTemplateId)
             .variable("ORDER_URL", orderAbsoluteUrlFactory.getOrderAbsoluteUrl(order.id))
+            .build()
+
+    private fun getPaidOrderEmail(order: Order): TransactionalEmail =
+        newTransactionalEmail()
+            .to(SendContact(order.buyerEmail))
+            .subject("Your gallery extension key")
+            .templateID(paidOrderTemplateId)
+            .variable("ENCODED_KEY", order.encodedKey)
             .build()
 
     private fun newTransactionalEmail(): TransactionalEmail.TransactionalEmailBuilder =

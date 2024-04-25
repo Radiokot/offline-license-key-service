@@ -3,19 +3,22 @@ package ua.com.radiokot.license.service.btcpay.webhook
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
+import javassist.NotFoundException
 import mu.KotlinLogging
 import ua.com.radiokot.license.service.orders.BtcPayOrdersRepository
+import ua.com.radiokot.license.service.orders.notifications.OrderNotificationsManager
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 class BtcPayWebhookController(
     webhookSecret: String,
-    private val storeId: String,
     private val btcPayOrdersRepository: BtcPayOrdersRepository,
+    private val orderNotificationsManager: OrderNotificationsManager?,
     private val jsonObjectMapper: ObjectMapper,
 ) {
     private val log = KotlinLogging.logger("BtcPayWebhookController")
     private val hmacKey = SecretKeySpec(webhookSecret.encodeToByteArray(), "HmacSHA256")
+    private val storeId = btcPayOrdersRepository.storeId
 
     fun handleEvent(ctx: Context) = with(ctx) {
         val expectedDigest = header("BTCPay-Sig")
@@ -57,6 +60,16 @@ class BtcPayWebhookController(
         log.debug {
             "handleEvent(): received_valid_event:" +
                     "\ntype=${event.type}"
+        }
+
+        val relatedOrder = btcPayOrdersRepository.getOrderByInvoiceId(
+            invoiceId = event.invoiceId,
+        ) ?: throw NotFoundException("Order with invoice '${event.invoiceId}' not found")
+
+        if (event.type == BtcPayWebhookEvent.Type.INVOICE_SETTLED) {
+            orderNotificationsManager?.notifyBuyerOfOrder(
+                order = relatedOrder,
+            )
         }
 
         json(

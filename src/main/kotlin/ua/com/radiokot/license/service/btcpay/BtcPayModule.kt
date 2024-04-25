@@ -31,9 +31,9 @@ val btcPayModule = module {
 
     single {
         BtcPayWebhookController(
-            storeId = getNotEmptyProperty("BTCPAY_STORE_ID"),
             webhookSecret = getPropertyOrNull("BTCPAY_WEBHOOK_SECRET") ?: "",
             btcPayOrdersRepository = get(),
+            orderNotificationsManager = getOrNull(),
             jsonObjectMapper = get(),
         )
     } bind BtcPayWebhookController::class

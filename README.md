@@ -28,5 +28,6 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `MAILJET_API_KEY`                   | Primary account API key                                                                                |                                                  |
 | `MAILJET_API_SECRET_KEY`            | Primary account API secret key                                                                         |                                                  |
 | `MAILJET_PENDING_ORDER_TEMPLATE_ID` | ID of the pending order transactional email template                                                   |                                                  |
+| `MAILJET_PAID_ORDER_TEMPLATE_ID`    | ID of the paid order transactional email template                                                      |                                                  |
 
 See `test_private_key.pem` and `test_public_key.pem` as format example. 

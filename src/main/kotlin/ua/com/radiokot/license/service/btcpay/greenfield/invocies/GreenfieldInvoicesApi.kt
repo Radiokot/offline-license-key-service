@@ -27,4 +27,15 @@ interface GreenfieldInvoicesApi {
         @Body
         creationData: GreenfieldInvoiceCreationData,
     ): GreenfieldInvoice
+
+    @Headers(
+        "Accept: application/json",
+    )
+    @GET("api/v1/stores/{storeId}/invoices/{invoiceId}")
+    fun getInvoice(
+        @Path("storeId")
+        storeId: String,
+        @Path("invoiceId")
+        invoiceId: String,
+    ): GreenfieldInvoice
 }

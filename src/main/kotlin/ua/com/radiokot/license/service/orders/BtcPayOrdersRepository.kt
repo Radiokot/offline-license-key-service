@@ -3,14 +3,16 @@ package ua.com.radiokot.license.service.orders
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.io.BigDecimalParser
 import com.fasterxml.jackson.databind.ObjectMapper
+import retrofit2.HttpException
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.GreenfieldInvoicesApi
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoiceCreationData
 import ua.com.radiokot.license.service.util.RequestRateLimiter
 import java.math.BigDecimal
+import java.net.HttpURLConnection
 
 class BtcPayOrdersRepository(
-    private val storeId: String,
+    val storeId: String,
     private val orderAbsoluteUrlFactory: OrderAbsoluteUrlFactory,
     private val speedPolicy: GreenfieldInvoice.SpeedPolicy,
     private val greenfieldInvoicesApi: GreenfieldInvoicesApi,
@@ -103,6 +105,19 @@ class BtcPayOrdersRepository(
             }
         )
     }
+
+    fun getOrderByInvoiceId(invoiceId: String): Order? =
+        try {
+            greenfieldInvoicesApi.getInvoice(
+                storeId = storeId,
+                invoiceId = invoiceId,
+            ).toOrder()
+        } catch (httpException: HttpException) {
+            if (httpException.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                null
+            else
+                throw httpException
+        }
 
     private class MetadataExtra(
         @JsonProperty("paymentMethodId")

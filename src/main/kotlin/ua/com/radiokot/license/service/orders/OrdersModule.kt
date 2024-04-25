@@ -46,6 +46,7 @@ val ordersModule = module {
                 senderEmail = getNotEmptyProperty("MAILJET_SENDER_EMAIL"),
                 senderName = getNotEmptyProperty("MAILJET_SENDER_NAME"),
                 pendingOrderTemplateId = getNotEmptyProperty("MAILJET_PENDING_ORDER_TEMPLATE_ID").toLong(),
+                paidOrderTemplateId = getNotEmptyProperty("MAILJET_PAID_ORDER_TEMPLATE_ID").toLong(),
                 apiKey = getNotEmptyProperty("MAILJET_API_KEY"),
                 apiSecretKey = getNotEmptyProperty("MAILJET_API_SECRET_KEY"),
                 orderAbsoluteUrlFactory = get(),
