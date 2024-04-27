@@ -13,6 +13,9 @@ public class OrderResource extends BaseResource {
     @JsonProperty("status")
     public Status status;
 
+    @JsonProperty("absolute_url")
+    public String absoluteUrl;
+
     public OrderResource(String id) {
         super(id);
     }
@@ -20,6 +23,7 @@ public class OrderResource extends BaseResource {
     public OrderResource(Order order) {
         super(order.getId());
         this.status = Status.values()[order.getStatus().ordinal()];
+        this.absoluteUrl = order.getAbsoluteUrl();
     }
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)

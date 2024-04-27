@@ -55,11 +55,37 @@
   <!-- End your project here-->
 
   <!-- Custom scripts -->
+  <script data-th-inline="javascript">
+    const orderId = /*[[${orderId}]]*/ '0'
+  </script>
+
   <script type="text/javascript">
     function copyOrderId() {
-      let copyText = document.getElementById("order-id")
-      navigator.clipboard.writeText(copyText.innerText)
+      navigator.clipboard.writeText(orderId)
     }
+
+    function checkStatusAndScheduleNext() {
+      return fetch('/v1/orders/' + orderId)
+        .then(response => response.json())
+        .then(response => {
+          let orderStatus = response?.data?.attributes?.status?.name
+          let orderAbsoluteUrl = response?.data?.attributes?.absolute_url
+          if (orderStatus != undefined && orderStatus != "pending" && orderAbsoluteUrl != undefined) {
+            window.location.href = orderAbsoluteUrl
+          } else {
+            scheduleNextStatusUpdate()
+          }
+        })
+        .catch(error => {
+          scheduleNextStatusUpdate()
+        })
+    }
+
+    function scheduleNextStatusUpdate(timeout = 4000) {
+      setTimeout(checkStatusAndScheduleNext, timeout)
+    }
+
+    scheduleNextStatusUpdate()
   </script>
 </body>
 

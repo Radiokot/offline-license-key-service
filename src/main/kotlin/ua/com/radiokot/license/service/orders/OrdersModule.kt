@@ -49,7 +49,6 @@ val ordersModule = module {
                 paidOrderTemplateId = getNotEmptyProperty("MAILJET_PAID_ORDER_TEMPLATE_ID").toLong(),
                 apiKey = getNotEmptyProperty("MAILJET_API_KEY"),
                 apiSecretKey = getNotEmptyProperty("MAILJET_API_SECRET_KEY"),
-                orderAbsoluteUrlFactory = get(),
                 httpClient = get(),
             )
         } binds arrayOf(OrderNotificationsManager::class)

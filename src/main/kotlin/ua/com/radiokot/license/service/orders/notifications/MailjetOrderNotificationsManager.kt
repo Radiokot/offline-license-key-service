@@ -7,7 +7,6 @@ import com.mailjet.client.transactional.response.SentMessageStatus
 import mu.KotlinLogging
 import okhttp3.OkHttpClient
 import ua.com.radiokot.license.service.orders.Order
-import ua.com.radiokot.license.service.orders.OrderAbsoluteUrlFactory
 
 class MailjetOrderNotificationsManager(
     senderEmail: String,
@@ -16,7 +15,6 @@ class MailjetOrderNotificationsManager(
     private val paidOrderTemplateId: Long,
     apiKey: String,
     apiSecretKey: String,
-    private val orderAbsoluteUrlFactory: OrderAbsoluteUrlFactory,
     httpClient: OkHttpClient,
 ) : OrderNotificationsManager {
     private val log = KotlinLogging.logger("MailjetOrderNotificationsManager")
@@ -84,7 +82,7 @@ class MailjetOrderNotificationsManager(
             .to(SendContact(order.buyerEmail))
             .subject("Order for gallery extension")
             .templateID(pendingOrderTemplateId)
-            .variable("ORDER_URL", orderAbsoluteUrlFactory.getOrderAbsoluteUrl(order.id))
+            .variable("ORDER_URL", order.absoluteUrl)
             .build()
 
     private fun getPaidOrderEmail(order: Order): TransactionalEmail =

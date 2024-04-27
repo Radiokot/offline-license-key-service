@@ -102,7 +102,10 @@ class BtcPayOrdersRepository(
 
                 GreenfieldInvoice.Status.SETTLED ->
                     Order.Status.PAID
-            }
+            },
+            absoluteUrl = checkNotNull(checkoutData?.redirectUrl) {
+                "The invoice must have the redirect URL"
+            },
         )
     }
 

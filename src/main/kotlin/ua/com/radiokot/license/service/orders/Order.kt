@@ -10,6 +10,7 @@ data class Order(
     val buyerEmail: String,
     val encodedKey: String,
     val status: Status,
+    val absoluteUrl: String,
 ) {
     override fun equals(other: Any?): Boolean =
         id == other
