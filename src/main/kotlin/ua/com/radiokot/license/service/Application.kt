@@ -67,6 +67,7 @@ object Application : KoinComponent {
                 config.http.defaultContentType = "text/plain; charset=utf-8"
                 config.jsonMapper(JavalinJackson(get()))
 
+                config.staticFiles.add("/frontend")
                 config.staticFiles.add { staticFileConfig ->
                     staticFileConfig.directory = "/frontend/css"
                     staticFileConfig.hostedPath = "/css"
