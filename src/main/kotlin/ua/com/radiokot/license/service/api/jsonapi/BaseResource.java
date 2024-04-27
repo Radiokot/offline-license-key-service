@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service.jsonapi;
+package ua.com.radiokot.license.service.api.jsonapi;
 
 import com.github.jasminb.jsonapi.annotations.Id;
 

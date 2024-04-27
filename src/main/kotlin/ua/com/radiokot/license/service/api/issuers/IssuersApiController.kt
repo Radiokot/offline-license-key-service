@@ -10,7 +10,7 @@ import ua.com.radiokot.license.service.api.issuers.model.IssuerResource
 import ua.com.radiokot.license.service.extension.jsonApi
 import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
 
-class IssuersController(
+class IssuersApiController(
     private val issuersRepository: IssuersRepository,
     private val resourceConverter: ResourceConverter,
 ) {

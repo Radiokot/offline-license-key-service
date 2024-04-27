@@ -3,7 +3,7 @@ package ua.com.radiokot.license.service.api.issuers.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 import ua.com.radiokot.license.service.issuers.model.Issuer;
-import ua.com.radiokot.license.service.jsonapi.BaseResource;
+import ua.com.radiokot.license.service.api.jsonapi.BaseResource;
 
 @Type("issuers")
 public class IssuerResource extends BaseResource {

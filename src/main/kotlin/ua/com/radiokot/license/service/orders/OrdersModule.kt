@@ -8,17 +8,17 @@ import ua.com.radiokot.license.service.btcpay.btcPayModule
 import ua.com.radiokot.license.service.btcpay.greenfield.invocies.model.GreenfieldInvoice
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
 import ua.com.radiokot.license.service.features.featuresModule
+import ua.com.radiokot.license.service.ioModule
 import ua.com.radiokot.license.service.issuers.di.issuersModule
 import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
-import ua.com.radiokot.license.service.jsonapi.di.jsonApiModule
 import ua.com.radiokot.license.service.orders.notifications.MailjetOrderNotificationsManager
 import ua.com.radiokot.license.service.orders.notifications.OrderNotificationsManager
 import java.security.interfaces.RSAPrivateKey
 
 val ordersModule = module {
     includes(
+        ioModule,
         btcPayModule,
-        jsonApiModule,
         featuresModule,
         issuersModule,
     )

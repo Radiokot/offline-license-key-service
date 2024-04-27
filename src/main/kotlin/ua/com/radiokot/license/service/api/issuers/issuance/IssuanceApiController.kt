@@ -15,7 +15,7 @@ import ua.com.radiokot.license.service.extension.jsonApi
 import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
 import java.security.interfaces.RSAPrivateKey
 
-class IssuanceController(
+class IssuanceApiController(
     private val issuersRepository: IssuersRepository,
     private val resourceConverter: ResourceConverter,
 ) {

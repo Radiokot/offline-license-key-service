@@ -2,7 +2,7 @@ package ua.com.radiokot.license.service.api.issuers.issuance.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
-import ua.com.radiokot.license.service.jsonapi.BaseResource;
+import ua.com.radiokot.license.service.api.jsonapi.BaseResource;
 
 @Type("issued-keys")
 public class IssuedKeyResource extends BaseResource {

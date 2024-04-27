@@ -18,9 +18,10 @@ import org.thymeleaf.messageresolver.StandardMessageResolver
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
-import ua.com.radiokot.license.service.api.issuers.IssuersController
-import ua.com.radiokot.license.service.api.issuers.di.issuersApiModule
-import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceController
+import ua.com.radiokot.license.service.api.apiModule
+import ua.com.radiokot.license.service.api.issuers.IssuersApiController
+import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceApiController
+import ua.com.radiokot.license.service.api.orders.OrdersApiController
 import ua.com.radiokot.license.service.btcpay.webhook.BtcPayWebhookController
 import ua.com.radiokot.license.service.features.FeaturesController
 import ua.com.radiokot.license.service.features.featuresModule
@@ -48,7 +49,7 @@ object Application : KoinComponent {
             environmentProperties()
 
             modules(
-                issuersApiModule,
+                apiModule,
                 paymentMethodsModule,
                 ordersModule,
                 featuresModule,
@@ -105,17 +106,22 @@ object Application : KoinComponent {
                 path("v1/") {
                     get(
                         "issuers",
-                        get<IssuersController>()::getIssuers
+                        get<IssuersApiController>()::getIssuers
                     )
 
                     get(
                         "issuers/{issuerId}",
-                        get<IssuersController>()::getIssuerById
+                        get<IssuersApiController>()::getIssuerById
                     )
 
                     post(
                         "issuers/{issuerId}/issuance",
-                        get<IssuanceController>()::issueKey
+                        get<IssuanceApiController>()::issueKey
+                    )
+
+                    get(
+                        "orders/{orderId}",
+                        get<OrdersApiController>()::getOrderById
                     )
                 }
 
