@@ -30,6 +30,7 @@ import ua.com.radiokot.license.service.orders.ordersModule
 import ua.com.radiokot.license.service.payment.BtcPayPaymentMethodController
 import ua.com.radiokot.license.service.payment.ManualCheckoutPaymentMethodController
 import ua.com.radiokot.license.service.payment.paymentMethodsModule
+import ua.com.radiokot.license.service.turnstile.cloudflareTurnstileModule
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
@@ -53,6 +54,7 @@ object Application : KoinComponent {
                 paymentMethodsModule,
                 ordersModule,
                 featuresModule,
+                cloudflareTurnstileModule,
             )
         }
 
@@ -101,7 +103,10 @@ object Application : KoinComponent {
 
                 get(
                     "buy",
-                    BuyPageController(get(), null)::render,
+                    BuyPageController(
+                        featuresRepository = get(),
+                        cloudflareTurnstile = getKoin().getOrNull(),
+                    )::render,
                 )
 
                 path("v1/") {

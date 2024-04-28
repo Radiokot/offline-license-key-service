@@ -7,6 +7,7 @@ import okio.ByteString.Companion.encodeUtf8
 import ua.com.radiokot.license.OfflineLicenseKeyFactory
 import ua.com.radiokot.license.service.features.Feature
 import ua.com.radiokot.license.service.features.FeaturesRepository
+import ua.com.radiokot.license.service.turnstile.CloudflareTurnstile
 
 typealias OrderCheckoutUrlFactory = (
     orderId: String,
@@ -18,6 +19,7 @@ class OrdersController(
     private val ordersRepository: OrdersRepository,
     private val featuresRepository: FeaturesRepository,
     private val keyFactory: OfflineLicenseKeyFactory,
+    private val cloudflareTurnstile: CloudflareTurnstile?,
 ) {
     fun getOrderById(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
@@ -41,6 +43,29 @@ class OrdersController(
     }
 
     fun createOrder(ctx: Context) = with(ctx) {
+        val orderId = formParam("reference")
+            ?.takeIf(String::isNotEmpty)
+            ?.encodeUtf8()
+            ?.sha256()
+            ?.hex()
+            ?: throw BadRequestResponse("Missing reference")
+
+        if (cloudflareTurnstile != null) {
+            val cloudflareTurnstileResponse = formParam(CloudflareTurnstile.BODY_FORM_RESPONSE)
+                ?.takeIf(String::isNotEmpty)
+                ?: throw BadRequestResponse("Missing Cloudflare Turnstile response")
+            val cloudflareCallerIp = header(CloudflareTurnstile.HEADER_IP)
+
+            if (!cloudflareTurnstile.verify(
+                    response = cloudflareTurnstileResponse,
+                    userIp = cloudflareCallerIp,
+                    idempotencyKey = orderId,
+                )
+            ) {
+                throw BadRequestResponse("Cloudflare Turnstile verification failed")
+            }
+        }
+
         val email = formParam("email")
             ?.takeIf(String::isNotEmpty)
             ?: throw BadRequestResponse("Missing email")
@@ -59,13 +84,6 @@ class OrdersController(
                     ?: throw BadRequestResponse("Feature '$featureIndex' is unknown")
             }
             ?: throw BadRequestResponse("Missing features")
-
-        val orderId = formParam("reference")
-            ?.takeIf(String::isNotEmpty)
-            ?.encodeUtf8()
-            ?.sha256()
-            ?.hex()
-            ?: throw BadRequestResponse("Missing reference")
 
         val paymentMethod = queryParam("method")
             ?.takeIf(String::isNotEmpty)

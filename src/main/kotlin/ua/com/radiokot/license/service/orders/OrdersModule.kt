@@ -69,6 +69,7 @@ val ordersModule = module {
                         issuer = issuer.name,
                     )
                 },
+            cloudflareTurnstile = getOrNull(),
         )
     } bind OrdersController::class
 }

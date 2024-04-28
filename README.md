@@ -18,6 +18,8 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `BTCPAY_WEBHOOK_SECRET`    | Optional, secret for set up BTCPay webhook for invoice creation and settlement      |
 | `PUBLIC_BASE_URL`          | Absolute base URL of the service, for redirects and notifications                   |
 
+See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format example.
+
 ### Notifications
 
 | Name                                | Meaning                                                                                                |                                                                          
@@ -30,4 +32,10 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `MAILJET_PENDING_ORDER_TEMPLATE_ID` | ID of the pending order transactional email template                                                   |                                                  |
 | `MAILJET_PAID_ORDER_TEMPLATE_ID`    | ID of the paid order transactional email template                                                      |                                                  |
 
-See `test_private_key.pem` and `test_public_key.pem` as format example. 
+### Captcha
+
+| Name                              | Meaning                                                                                                                |                                                                          
+|:----------------------------------|:-----------------------------------------------------------------------------------------------------------------------|
+| `CLOUDFLARE_TURNSTILE`            | Declare to use Cloudflare Turnstile as captcha on the buy page. <br/>If declared, the following variables must be set. |                                                  |
+| `CLOUDFLARE_TURNSTILE_SITE_KEY`   | The Site Key value of the configured Turnstile                                                                         |
+| `CLOUDFLARE_TURNSTILE_SECRET_KEY` | The Secret Key value of the configured Turnstile                                                                       |
