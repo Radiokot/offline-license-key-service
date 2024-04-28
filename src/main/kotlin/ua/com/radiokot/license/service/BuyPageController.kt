@@ -4,10 +4,12 @@ import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
 import io.javalin.http.NotFoundResponse
 import ua.com.radiokot.license.service.features.FeaturesRepository
+import ua.com.radiokot.license.service.turnstile.CloudflareTurnstile
 import java.util.*
 
 class BuyPageController(
     private val featuresRepository: FeaturesRepository,
+    private val cloudflareTurnstile: CloudflareTurnstile?,
 ) {
     fun render(ctx: Context) = with(ctx) {
         val featureIndex = queryParam("f")
@@ -21,6 +23,7 @@ class BuyPageController(
         render("buy.html", mapOf(
             "feature" to feature,
             "reference" to UUID.randomUUID().toString(),
+            "turnstileSiteKey" to cloudflareTurnstile?.siteKey,
         ))
     }
 }

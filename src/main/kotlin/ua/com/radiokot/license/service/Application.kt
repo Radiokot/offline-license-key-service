@@ -101,7 +101,7 @@ object Application : KoinComponent {
 
                 get(
                     "buy",
-                    BuyPageController(get())::render,
+                    BuyPageController(get(), null)::render,
                 )
 
                 path("v1/") {

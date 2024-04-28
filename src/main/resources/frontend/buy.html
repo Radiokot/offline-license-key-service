@@ -58,15 +58,21 @@
           <input name="reference" data-th-value="${reference}" hidden />
         </div>
         <div class="col-md-4 py-4 px-4">
-          <h5><span data-th-text="#{to_pay}">To pay:</span> $ <span data-th-text="${feature.price}">5</span></label>
-          <br><br>
+          <h5><span data-th-text="#{to_pay}">To pay:</span> $ <span data-th-text="${feature.price}">5</span></h5>
+          <span th:if="${turnstileSiteKey != null}">
+            <!-- Cloudflare captcha -->
+            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+            <div class="checkbox my-3">
+              <div class="cf-turnstile" data-th-data-sitekey="${turnstileSiteKey}"
+                data-sitekey="1x00000000000000000000AA" data-th-data-language="#{lang}"></div>
+            </div>
+          </span>
           <button id="btcpay-button" type="submit" class="btn btn-warning btn-block" data-mdb-ripple-init
-            data-th-text="#{pay_with_btc}"
-            data-th-formaction="@{/orders(method=btcpay)}" formmethod="post">BTC</button>
+            data-th-text="#{pay_with_btc}" data-th-formaction="@{/orders(method=btcpay)}" formmethod="post">BTC</button>
           <br>
           <button id="other-method-button" type="submit" class="btn btn-secondary btn-block" data-mdb-ripple-init
-            data-th-text="#{use_other_payment_method}"
-            data-th-formaction="@{/orders(method=manual)}" formmethod="post">Use other method</button>
+            data-th-text="#{use_other_payment_method}" data-th-formaction="@{/orders(method=manual)}"
+            formmethod="post">Use other method</button>
         </div>
       </form>
     </div>
@@ -81,10 +87,10 @@
       if (isFormSubmitting) {
         return false
       }
-      
+
       isFormSubmitting = true
-      document.getElementById("btcpay-button").disabled  = true
-      document.getElementById("other-method-button").disabled  = true
+      document.getElementById("btcpay-button").disabled = true
+      document.getElementById("other-method-button").disabled = true
 
       return true
     }
