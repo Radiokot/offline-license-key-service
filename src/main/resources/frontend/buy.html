@@ -24,6 +24,8 @@
       max-width: 1024px;
     }
   </style>
+  <!-- Cloudflare captcha, blocking loading -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" th:if="${turnstileSiteKey != null}"></script>
 </head>
 
 <body>
@@ -59,14 +61,12 @@
         </div>
         <div class="col-md-4 py-4 px-4">
           <h5><span data-th-text="#{to_pay}">To pay:</span> $ <span data-th-text="${feature.price}">5</span></h5>
-          <span th:if="${turnstileSiteKey != null}">
+          <div class="checkbox my-3" th:if="${turnstileSiteKey != null}">
             <!-- Cloudflare captcha -->
-            <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
-            <div class="checkbox my-3">
-              <div class="cf-turnstile" data-th-data-sitekey="${turnstileSiteKey}"
-                data-sitekey="1x00000000000000000000AA" data-th-data-language="#{lang}"></div>
-            </div>
-          </span>
+            <div class="cf-turnstile" data-th-data-sitekey="${turnstileSiteKey}" data-sitekey="1x00000000000000000000AA"
+              data-th-data-language="#{lang}"></div>
+          </div>
+          <br th:if="${turnstileSiteKey == null}">
           <button id="btcpay-button" type="submit" class="btn btn-warning btn-block" data-mdb-ripple-init
             data-th-text="#{pay_with_btc}" data-th-formaction="@{/orders(method=btcpay)}" formmethod="post">BTC</button>
           <br>
