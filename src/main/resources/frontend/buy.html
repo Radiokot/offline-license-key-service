@@ -30,6 +30,36 @@
 
 <body>
 
+  <!-- Custom scripts -->
+  <script type="text/javascript">
+    let isFormSubmitting = false
+
+    function lockForm() {
+      document.getElementById("btcpay-button").disabled = true
+      document.getElementById("other-method-button").disabled = true
+    }
+
+    function unlockForm() {
+      if (isFormSubmitting) {
+        return
+      }
+
+      document.getElementById("btcpay-button").disabled = false
+      document.getElementById("other-method-button").disabled = false
+    }
+
+    function checkForm(form) {
+      if (isFormSubmitting) {
+        return false
+      }
+
+      isFormSubmitting = true
+      lockForm()
+
+      return true
+    }
+  </script>
+
   <!-- Start your project here-->
   <div class="container">
     <div id="content" class="mx-auto px-2 pt-2 pt-md-4 pb-4">
@@ -64,7 +94,7 @@
           <div class="checkbox my-3" th:if="${turnstileSiteKey != null}">
             <!-- Cloudflare captcha -->
             <div class="cf-turnstile" data-th-data-sitekey="${turnstileSiteKey}" data-sitekey="1x00000000000000000000AA"
-              data-th-data-language="#{lang}"></div>
+              data-th-data-language="#{lang}" data-callback="unlockForm"></div>
           </div>
           <br th:if="${turnstileSiteKey == null}">
           <button id="btcpay-button" type="submit" class="btn btn-warning btn-block" data-mdb-ripple-init
@@ -73,28 +103,14 @@
           <button id="other-method-button" type="submit" class="btn btn-secondary btn-block" data-mdb-ripple-init
             data-th-text="#{use_other_payment_method}" data-th-formaction="@{/orders(method=manual)}"
             formmethod="post">Use other method</button>
+          <script th:if="${turnstileSiteKey != null}">
+            lockForm()
+          </script>
         </div>
       </form>
     </div>
   </div>
   <!-- End your project here-->
-
-  <!-- Custom scripts -->
-  <script type="text/javascript">
-    let isFormSubmitting = false
-
-    function checkForm(form) {
-      if (isFormSubmitting) {
-        return false
-      }
-
-      isFormSubmitting = true
-      document.getElementById("btcpay-button").disabled = true
-      document.getElementById("other-method-button").disabled = true
-
-      return true
-    }
-  </script>
 </body>
 
 </html>
