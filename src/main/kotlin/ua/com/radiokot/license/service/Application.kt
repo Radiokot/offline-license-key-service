@@ -19,6 +19,7 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import sun.misc.Signal
 import ua.com.radiokot.license.service.api.apiModule
+import ua.com.radiokot.license.service.api.features.FeaturesApiController
 import ua.com.radiokot.license.service.api.issuers.IssuersApiController
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceApiController
 import ua.com.radiokot.license.service.api.orders.OrdersApiController
@@ -128,6 +129,11 @@ object Application : KoinComponent {
                     get(
                         "orders/{orderId}",
                         get<OrdersApiController>()::getOrderById
+                    )
+
+                    get(
+                        "features",
+                        get<FeaturesApiController>()::getFeatures,
                     )
                 }
 
