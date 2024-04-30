@@ -20,10 +20,18 @@ class BuyPageController(
         val feature = featuresRepository[featureIndex]
             ?: throw NotFoundResponse("Feature '$featureIndex' not found")
 
+        val email = queryParam("email")
+            ?.takeIf(String::isNotEmpty)
+
+        val hardware = queryParam("hw")
+            ?.takeIf(String::isNotEmpty)
+
         render("buy.html", mapOf(
             "feature" to feature,
             "reference" to UUID.randomUUID().toString(),
             "turnstileSiteKey" to cloudflareTurnstile?.siteKey,
+            "email" to email,
+            "hardware" to hardware,
         ))
     }
 }
