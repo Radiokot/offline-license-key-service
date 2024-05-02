@@ -20,6 +20,7 @@ class OrdersController(
     private val featuresRepository: FeaturesRepository,
     private val keyFactory: OfflineLicenseKeyFactory,
     private val cloudflareTurnstile: CloudflareTurnstile?,
+    private val keyActivationUri: String?,
 ) {
     fun getOrderById(ctx: Context) = with(ctx) {
         val orderId = pathParam("orderId")
@@ -34,6 +35,7 @@ class OrdersController(
                 render(
                     "successful_purchase.html", mapOf(
                         "encodedKey" to order.encodedKey,
+                        "keyActivationUri" to keyActivationUri,
                     )
                 )
 

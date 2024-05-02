@@ -6,17 +6,18 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 
 ## Environment variables
 
-| Name                       | Meaning                                                                             |                                                                          
-|:---------------------------|:------------------------------------------------------------------------------------|
-| `ISSUER_NAME`              | Name of the license keys issuer                                                     |                                                  |
-| `ISSUER_PRIVATE_KEY`       | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format    |
-| `ISSUER_PUBLIC_KEY`        | Path to a file containing X509 encoded issuer's public key in PEM text format       |
-| `GREENFIELD_BASE_URL`      | Absolute base URL of BTCPay Greenfield API                                          |
-| `GREENFIELD_AUTHORIZATION` | BTCPay Greenfield authorization value (`Token XXXXX`), invoices permission required |
-| `BTCPAY_STORE_ID`          | BTCPay store ID                                                                     |
-| `BTCPAY_INVOICE_BASE_URL`  | Absolute base URL of the public BTCPay invoice endpoint                             |
-| `BTCPAY_WEBHOOK_SECRET`    | Optional, secret for set up BTCPay webhook for invoice creation and settlement      |
-| `PUBLIC_BASE_URL`          | Absolute base URL of the service, for redirects and notifications                   |
+| Name                       | Meaning                                                                                                                                |                                                                          
+|:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| `ISSUER_NAME`              | Name of the license keys issuer                                                                                                        |                                                  |
+| `ISSUER_PRIVATE_KEY`       | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format                                                       |
+| `ISSUER_PUBLIC_KEY`        | Path to a file containing X509 encoded issuer's public key in PEM text format                                                          |
+| `GREENFIELD_BASE_URL`      | Absolute base URL of BTCPay Greenfield API                                                                                             |
+| `GREENFIELD_AUTHORIZATION` | BTCPay Greenfield authorization value (`Token XXXXX`), invoices permission required                                                    |
+| `BTCPAY_STORE_ID`          | BTCPay store ID                                                                                                                        |
+| `BTCPAY_INVOICE_BASE_URL`  | Absolute base URL of the public BTCPay invoice endpoint                                                                                |
+| `BTCPAY_WEBHOOK_SECRET`    | Optional, secret for set up BTCPay webhook for invoice creation and settlement                                                         |
+| `PUBLIC_BASE_URL`          | Absolute base URL of the service, for redirects and notifications                                                                      |
+| `KEY_ACTIVATION_URI`       | Optional, a URI which opens the app for key activation, for the successful purchase page. <br/> The key is passed as `key` query param |
 
 See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format example.
 

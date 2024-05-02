@@ -70,6 +70,7 @@ val ordersModule = module {
                     )
                 },
             cloudflareTurnstile = getOrNull(),
+            keyActivationUri = getPropertyOrNull("KEY_ACTIVATION_URI")
         )
     } bind OrdersController::class
 }

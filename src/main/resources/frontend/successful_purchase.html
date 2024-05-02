@@ -37,13 +37,20 @@
 
       <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
       <div class="col-md-6 my-4">
-        <p class="lead" data-th-text="#{key_activation_explanation}">Activation explanation</p>
+        <p class="lead" data-th-text="${keyActivationUri != null} ? #{key_activation_explanation_with_button} : #{key_activation_explanation}">Activation explanation</p>
         <br>
         <label for="key" data-th-text="#{key_title}">Key title</label>
         <textarea class="form-control" rows="3" id="key" data-th-text="${encodedKey}" readonly>encoded-key</textarea>
-        <button type="button" class="btn btn-light btn-sm my-2" onclick="copyKey()" data-th-title="#{copy_key}">
-          <i class="fa-regular fa-copy"></i>
-        </button>
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-light btn-sm my-2 d-block col-md-auto" onclick="copyKey()"
+            data-th-title="#{copy_key}">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+          <div class="col-md-auto my-2">
+            <a th:if="${keyActivationUri != null}" href="/" data-th-href="@{${keyActivationUri}(key=${encodedKey})}"
+              class="btn btn-primary btn-sm" data-th-text="#{activate_key}">Activate</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
