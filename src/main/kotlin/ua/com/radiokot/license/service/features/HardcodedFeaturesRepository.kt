@@ -12,7 +12,7 @@ class HardcodedFeaturesRepository: FeaturesRepository {
             price = BigDecimal("2"),
         ),
         Feature(
-            index = 2,
+            index = 1,
             name = "Yet another extension",
             description = "This is a feature reserved purely for testing purposes",
             bannerUrl = "https://u.macula.link/vgJasPbpRNi57GTm_JGIgA-7",
