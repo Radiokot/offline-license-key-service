@@ -40,6 +40,12 @@ val ordersModule = module {
         )
     } bind OrdersRepository::class
 
+    single {
+        DummyOrdersRepository(
+            orderAbsoluteUrlFactory = get(),
+        )
+    } bind OrdersRepository::class
+
     if (System.getenv("MAILJET_ORDER_NOTIFICATIONS") != null) {
         factory {
             MailjetOrderNotificationsManager(
