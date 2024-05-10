@@ -31,13 +31,23 @@
   <!-- Start your project here-->
   <div class="container">
     <div id="content" class="mx-auto px-2 pt-2 pt-md-4 pb-4">
-      <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
+      <span class="d-none d-sm-block">
+        <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
 
-      <br><br>
+        <br><br>
 
-      <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
+        <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
+      </span>
+      <div class="d-block d-sm-none my-2">
+        <h1 class="display-6 fw-bold d-inline" data-th-text="#{title}">
+          <img data-th-src="@{/img/logo.svg}" style="vertical-align: bottom; height: 2rem;" src="img/logo.svg"
+            alt="Logo" /> Title
+        </h1>
+      </div>
       <div class="col-md-6 my-4">
-        <p class="lead" data-th-text="${keyActivationUri != null} ? #{key_activation_explanation_with_button} : #{key_activation_explanation}">Activation explanation</p>
+        <p class="lead"
+          data-th-text="${keyActivationUri != null} ? #{key_activation_explanation_with_button} : #{key_activation_explanation}">
+          Activation explanation</p>
         <br>
         <label for="key" data-th-text="#{key_title}">Key title</label>
         <textarea class="form-control" rows="3" id="key" data-th-text="${encodedKey}" readonly>encoded-key</textarea>

@@ -63,12 +63,19 @@
   <!-- Start your project here-->
   <div class="container">
     <div id="content" class="mx-auto px-2 pt-2 pt-md-4 pb-4">
-      <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
+      <span class="d-none d-sm-block">
+        <img data-th-src="@{/img/logo.svg}" class="my-4" src="img/logo.svg" alt="Logo" width="60" />
 
-      <br><br>
+        <br><br>
 
-      <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
-
+        <h1 class="display-5 fw-bold" data-th-text="#{title}">Title</h1>
+      </span>
+      <div class="d-block d-sm-none my-2">
+        <h1 class="display-6 fw-bold d-inline" data-th-text="#{title}">
+          <img data-th-src="@{/img/logo.svg}" style="vertical-align: bottom; height: 2rem;" src="img/logo.svg"
+            alt="Logo" /> Title
+        </h1>
+      </div>
       <form class="my-4 row" onsubmit="return checkForm(this)">
         <div class="col-md-6 rounded-6 bg-body-tertiary py-4 px-4">
           <div class="form-group">
