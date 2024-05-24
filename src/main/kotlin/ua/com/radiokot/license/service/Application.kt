@@ -3,7 +3,9 @@ package ua.com.radiokot.license.service
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
+import io.javalin.http.ForbiddenResponse
 import io.javalin.http.Header
+import io.javalin.http.MethodNotAllowedResponse
 import io.javalin.http.servlet.HttpResponseExceptionMapper
 import io.javalin.json.JavalinJackson
 import io.javalin.rendering.template.JavalinThymeleaf
@@ -123,8 +125,8 @@ object Application : KoinComponent {
 
                     post(
                         "issuers/{issuerId}/issuance",
-                        get<IssuanceApiController>()::issueKey
-                    )
+//                        get<IssuanceApiController>()::issueKey
+                    ) { throw ForbiddenResponse() }
 
                     get(
                         "orders/{orderId}",
