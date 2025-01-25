@@ -4,8 +4,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
 import ua.com.radiokot.license.service.issuers.model.ConfiguredIssuer
-import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
-import ua.com.radiokot.license.service.issuers.repo.RealIssuersRepository
+import ua.com.radiokot.license.service.issuers.repo.*
+import java.time.Duration
 
 val issuersModule = module {
     single {
@@ -20,4 +20,17 @@ val issuersModule = module {
             configuredIssuers = listOf(theOnlyConfiguredIssuer),
         )
     } bind IssuersRepository::class
+
+    single {
+        val timeout = getPropertyOrNull<String>("KEY_RENEWAL_TIMEOUT")
+            ?.let(Duration::parse)
+
+        if (timeout != null) {
+            InMemoryTimeoutKeyRenewalAllowanceRepository(
+                renewalTimeout = timeout,
+            )
+        } else {
+            AlwaysAllowingKeyRenewalAllowanceRepository
+        }
+    } bind KeyRenewalAllowanceRepository::class
 }

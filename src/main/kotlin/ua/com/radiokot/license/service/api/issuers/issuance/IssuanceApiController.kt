@@ -3,10 +3,7 @@ package ua.com.radiokot.license.service.api.issuers.issuance
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.exceptions.InvalidJsonApiResourceException
-import io.javalin.http.BadRequestResponse
-import io.javalin.http.Context
-import io.javalin.http.HttpStatus
-import io.javalin.http.NotFoundResponse
+import io.javalin.http.*
 import mu.KotlinLogging
 import ua.com.radiokot.license.OfflineLicenseKey
 import ua.com.radiokot.license.OfflineLicenseKeyVerificationException
@@ -16,11 +13,13 @@ import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuedKeyResou
 import ua.com.radiokot.license.service.api.issuers.issuance.model.RenewalRequestResource
 import ua.com.radiokot.license.service.extension.jsonApi
 import ua.com.radiokot.license.service.issuers.repo.IssuersRepository
+import ua.com.radiokot.license.service.issuers.repo.KeyRenewalAllowanceRepository
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 
 class IssuanceApiController(
     private val issuersRepository: IssuersRepository,
+    private val renewalAllowanceRepository: KeyRenewalAllowanceRepository,
     private val resourceConverter: ResourceConverter,
 ) {
     private val log = KotlinLogging.logger("IssuanceController")
@@ -156,6 +155,18 @@ class IssuanceApiController(
                 hardware = renewalRequest.hardware
                     ?: throw BadRequestResponse("The request must have hardware string attribute"),
             )
+
+        if (!renewalAllowanceRepository.getKeyRenewalAllowance(renewedKey.subject)) {
+            throw ForbiddenResponse(
+                "The renewal for this key subject is not currently allowed",
+            )
+                .also {
+                    log.debug {
+                        "renewKey(): renewal_not_allowed:" +
+                                "\nsubject=${renewedKey.subject}"
+                    }
+                }
+        }
 
         log.info {
             "renewKey(): new_key_issued:" +

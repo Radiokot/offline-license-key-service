@@ -6,11 +6,19 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 
 ## Environment variables
 
+### Bare minimum, issuance API
 | Name                       | Meaning                                                                                                                                |                                                                          
 |:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
 | `ISSUER_NAME`              | Name of the license keys issuer                                                                                                        |                                                  |
 | `ISSUER_PRIVATE_KEY`       | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format                                                       |
 | `ISSUER_PUBLIC_KEY`        | Path to a file containing X509 encoded issuer's public key in PEM text format                                                          |
+| `KEY_RENEWAL_TIMEOUT`      | Optional, key renewal timeout in ISO-8601 format. For example, `PT6H` means 1 renewal in 6 hours per subject                           |
+
+See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format example.
+
+### Web store based on BTCPay Server
+| Name                       | Meaning                                                                                                                                |                                                                          
+|:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
 | `GREENFIELD_BASE_URL`      | Absolute base URL of BTCPay Greenfield API                                                                                             |
 | `GREENFIELD_AUTHORIZATION` | BTCPay Greenfield authorization value (`Token XXXXX`), invoices permission required                                                    |
 | `BTCPAY_STORE_ID`          | BTCPay store ID                                                                                                                        |
@@ -19,9 +27,7 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 | `PUBLIC_BASE_URL`          | Absolute base URL of the service, for redirects and notifications                                                                      |
 | `KEY_ACTIVATION_URI`       | Optional, a URI which opens the app for key activation, for the successful purchase page. <br/> The key is passed as `key` query param |
 
-See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format example.
-
-### Notifications
+### Notifications for the store
 
 | Name                                | Meaning                                                                                                |                                                                          
 |:------------------------------------|:-------------------------------------------------------------------------------------------------------|
@@ -33,7 +39,7 @@ See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format e
 | `MAILJET_PENDING_ORDER_TEMPLATE_ID` | ID of the pending order transactional email template                                                   |                                                  |
 | `MAILJET_PAID_ORDER_TEMPLATE_ID`    | ID of the paid order transactional email template                                                      |                                                  |
 
-### Captcha
+### Captcha for the store
 
 | Name                              | Meaning                                                                                                                |                                                                          
 |:----------------------------------|:-----------------------------------------------------------------------------------------------------------------------|
