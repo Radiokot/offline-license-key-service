@@ -1,8 +1,7 @@
 package ua.com.radiokot.license.service
 
 import io.javalin.Javalin
-import io.javalin.apibuilder.ApiBuilder.get
-import io.javalin.apibuilder.ApiBuilder.path
+import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
 import io.javalin.http.servlet.HttpResponseExceptionMapper
@@ -22,6 +21,7 @@ import sun.misc.Signal
 import ua.com.radiokot.license.service.api.apiModule
 import ua.com.radiokot.license.service.api.features.FeaturesApiController
 import ua.com.radiokot.license.service.api.issuers.IssuersApiController
+import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceApiController
 import ua.com.radiokot.license.service.api.orders.OrdersApiController
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
@@ -93,6 +93,11 @@ object Application : KoinComponent {
                     get(
                         "issuers/{issuerId}",
                         get<IssuersApiController>()::getIssuerById
+                    )
+
+                    post(
+                        "issuers/{issuerId}/renewal",
+                        get<IssuanceApiController>()::renewKey
                     )
 
                     get(

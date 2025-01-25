@@ -11,6 +11,7 @@ import ua.com.radiokot.license.service.api.issuers.IssuersApiController
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceApiController
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuanceRequestResource
 import ua.com.radiokot.license.service.api.issuers.issuance.model.IssuedKeyResource
+import ua.com.radiokot.license.service.api.issuers.issuance.model.RenewalRequestResource
 import ua.com.radiokot.license.service.api.issuers.model.IssuerResource
 import ua.com.radiokot.license.service.api.orders.OrdersApiController
 import ua.com.radiokot.license.service.api.orders.model.OrderResource
@@ -26,6 +27,7 @@ val apiModule = module {
             get<ObjectMapper>(),
             IssuerResource::class.java,
             IssuanceRequestResource::class.java,
+            RenewalRequestResource::class.java,
             IssuedKeyResource::class.java,
             OrderResource::class.java,
             FeatureResource::class.java,
