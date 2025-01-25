@@ -7,16 +7,19 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 ## Environment variables
 
 ### Bare minimum, issuance API
-| Name                       | Meaning                                                                                                                                |                                                                          
-|:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
-| `ISSUER_NAME`              | Name of the license keys issuer                                                                                                        |                                                  |
-| `ISSUER_PRIVATE_KEY`       | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format                                                       |
-| `ISSUER_PUBLIC_KEY`        | Path to a file containing X509 encoded issuer's public key in PEM text format                                                          |
-| `KEY_RENEWAL_TIMEOUT`      | Optional, key renewal timeout in ISO-8601 format. For example, `PT6H` means 1 renewal in 6 hours per subject                           |
+
+| Name                     | Meaning                                                                                                                              |                                                                          
+|:-------------------------|:-------------------------------------------------------------------------------------------------------------------------------------|
+| `ISSUER_NAME`            | Name of the license keys issuer                                                                                                      |                                                  |
+| `ISSUER_PRIVATE_KEY`     | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format                                                     |
+| `ISSUER_PUBLIC_KEY`      | Path to a file containing X509 encoded issuer's public key in PEM text format                                                        |
+| `KEY_RENEWAL_TIMEOUT`    | Optional, key renewal timeout in ISO-8601 format. For example, `PT6H` means 1 renewal in 6 hours per subject                         |
+| `KEY_RENEWAL_TIMEOUT_DB` | Optional, JBDC connection string for a database to store renewal timeouts between restarts. For example, `jdbc:sqlite:D:/timeout.db` |
 
 See `test_private_key.pem` and `test_public_key.pem` as the issuer keys format example.
 
 ### Web store based on BTCPay Server
+
 | Name                       | Meaning                                                                                                                                |                                                                          
 |:---------------------------|:---------------------------------------------------------------------------------------------------------------------------------------|
 | `GREENFIELD_BASE_URL`      | Absolute base URL of BTCPay Greenfield API                                                                                             |

@@ -14,11 +14,11 @@ class InMemoryTimeoutKeyRenewalAllowanceRepository(
         val now = Instant.now()
         val existingInstant = instantsBySubject[subject]
 
-        if (existingInstant != null && existingInstant + renewalTimeout > now) {
-            return@synchronized false
+        return@synchronized if (existingInstant != null && existingInstant + renewalTimeout > now) {
+            false
         } else {
             instantsBySubject[subject] = now
-            return@synchronized true
+            true
         }
     }
 }

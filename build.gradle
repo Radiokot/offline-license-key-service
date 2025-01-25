@@ -46,6 +46,7 @@ dependencies {
 
     implementation 'com.github.jasminb:jsonapi-converter:0.12'
     implementation 'com.mailjet:mailjet-client:5.2.5'
+    implementation 'org.xerial:sqlite-jdbc:3.48.0.0'
 
     testImplementation "junit:junit:4.13.2"
 }

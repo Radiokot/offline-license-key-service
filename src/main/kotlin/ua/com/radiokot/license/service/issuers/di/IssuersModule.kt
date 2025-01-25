@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ua.com.radiokot.license.service.extension.getNotEmptyProperty
 import ua.com.radiokot.license.service.issuers.model.ConfiguredIssuer
 import ua.com.radiokot.license.service.issuers.repo.*
+import java.sql.DriverManager
 import java.time.Duration
 
 val issuersModule = module {
@@ -26,9 +27,18 @@ val issuersModule = module {
             ?.let(Duration::parse)
 
         if (timeout != null) {
-            InMemoryTimeoutKeyRenewalAllowanceRepository(
-                renewalTimeout = timeout,
-            )
+            val databaseString = getPropertyOrNull<String>("KEY_RENEWAL_TIMEOUT_DB")
+
+            if (databaseString != null) {
+                DatabaseTimeoutKeyRenewalAllowanceRepository(
+                    dbConnection = DriverManager.getConnection(databaseString),
+                    renewalTimeout = timeout
+                )
+            } else {
+                InMemoryTimeoutKeyRenewalAllowanceRepository(
+                    renewalTimeout = timeout,
+                )
+            }
         } else {
             AlwaysAllowingKeyRenewalAllowanceRepository
         }
