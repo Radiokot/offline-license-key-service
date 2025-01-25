@@ -15,11 +15,14 @@ constructor(
     val name: String,
     @JsonProperty("price")
     val price: String,
+    @JsonProperty("page")
+    val page: String,
 ) : BaseResource(id) {
 
     constructor(feature: Feature) : this(
         id = feature.index.toString(),
         name = feature.name,
         price = feature.price.toPlainString(),
+        page = feature.pageUrl,
     )
 }

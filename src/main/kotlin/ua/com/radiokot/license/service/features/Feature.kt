@@ -7,5 +7,6 @@ data class Feature(
     val name: String,
     val description: String,
     val bannerUrl: String,
+    val pageUrl: String,
     val price: BigDecimal,
 )
