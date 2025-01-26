@@ -4,6 +4,8 @@ Web service wrapping the [offline license key library](https://github.com/Radiok
 
 ⚒ Work in progress. Please, come back later.
 
+Java version: 11
+
 ## Environment variables
 
 ### Bare minimum, issuance API

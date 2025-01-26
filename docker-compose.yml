@@ -1,0 +1,20 @@
+services:
+  olk-svc:
+    container_name: offline-license-key-service
+    image: ghcr.io/radiokot/offline-license-key-service:main
+    build: .
+    restart: unless-stopped
+    env_file: "local/running.env"
+    volumes:
+      #- "./local/log4j.properties:/log4j.properties"
+      - "./local/db/:/db/"
+      - "./local/keys/:/keys/"
+    environment:
+      - PORT=8042
+    ports:
+      - 8042:8042
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
