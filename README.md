@@ -13,8 +13,8 @@ Java version: 11
 | Name                     | Meaning                                                                                                                              |                                                                          
 |:-------------------------|:-------------------------------------------------------------------------------------------------------------------------------------|
 | `ISSUER_NAME`            | Name of the license keys issuer                                                                                                      |                                                  |
-| `ISSUER_PRIVATE_KEY`     | Path to a file containing PKCS#8 encoded issuer's private key in PEM text format                                                     |
-| `ISSUER_PUBLIC_KEY`      | Path to a file containing X509 encoded issuer's public key in PEM text format                                                        |
+| `ISSUER_PRIVATE_KEY`     | Path to a file containing PKCS#1 encoded issuer's RSA private key in PEM text format                                                 |
+| `ISSUER_PUBLIC_KEY`      | Path to a file containing X509 encoded issuer's RSA public key in PEM text format                                                    |
 | `KEY_RENEWAL_TIMEOUT`    | Optional, key renewal timeout in ISO-8601 format. For example, `PT6H` means 1 renewal in 6 hours per subject                         |
 | `KEY_RENEWAL_TIMEOUT_DB` | Optional, JBDC connection string for a database to store renewal timeouts between restarts. For example, `jdbc:sqlite:D:/timeout.db` |
 

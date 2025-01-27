@@ -25,7 +25,7 @@ class RsaPemEncoding {
             .toString()
 
     /**
-     * @return PKCS#8 encoded key in PEM text format
+     * @return PKCS#1 encoded key in PEM text format
      */
     fun encodePrivate(privateKey: RSAPrivateKey): String =
         StringBuilder()
@@ -54,7 +54,7 @@ class RsaPemEncoding {
                 as RSAPublicKey
 
     /**
-     * @param encodedPrivateKey PKCS#8 encoded key in PEM text format
+     * @param encodedPrivateKey PKCS#1 encoded key in PEM text format
      */
     fun decodePrivate(encodedPrivateKey: String): RSAPrivateKey =
         rsaKeyFactory
