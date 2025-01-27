@@ -4,9 +4,9 @@ import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Header
-import io.javalin.http.servlet.HttpResponseExceptionMapper
 import io.javalin.json.JavalinJackson
 import io.javalin.rendering.template.JavalinThymeleaf
+import io.javalin.router.exception.HttpResponseExceptionMapper
 import mu.KotlinLogging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -71,45 +71,48 @@ object Application : KoinComponent {
                     staticFileConfig.hostedPath = "/img"
                 }
 
-                JavalinThymeleaf.init(TemplateEngine().apply {
-                    setTemplateResolver(ClassLoaderTemplateResolver().apply {
-                        templateMode = TemplateMode.HTML
-                        prefix = "/frontend/"
-                        characterEncoding = "UTF-8"
-                    })
-                    setMessageResolver(StandardMessageResolver())
-                })
+                config.fileRenderer(JavalinThymeleaf(
+                    TemplateEngine().apply {
+                        setTemplateResolver(ClassLoaderTemplateResolver().apply {
+                            templateMode = TemplateMode.HTML
+                            prefix = "/frontend/"
+                            characterEncoding = "UTF-8"
+                        })
+                        setMessageResolver(StandardMessageResolver())
+                    }
+                ))
+
+                config.router.apiBuilder {
+                    path("v1/") {
+                        get(
+                            "issuers",
+                            get<IssuersApiController>()::getIssuers
+                        )
+
+                        get(
+                            "issuers/{issuerId}",
+                            get<IssuersApiController>()::getIssuerById
+                        )
+
+                        post(
+                            "issuers/{issuerId}/renewal",
+                            get<IssuanceApiController>()::renewKey
+                        )
+
+                        get(
+                            "orders/{orderId}",
+                            get<OrdersApiController>()::getOrderById
+                        )
+
+                        get(
+                            "features",
+                            get<FeaturesApiController>()::getFeatures,
+                        )
+                    }
+                }
             }
             .after { ctx ->
                 ctx.header(Header.SERVER, "olk-svc")
-            }
-            .routes {
-                path("v1/") {
-                    get(
-                        "issuers",
-                        get<IssuersApiController>()::getIssuers
-                    )
-
-                    get(
-                        "issuers/{issuerId}",
-                        get<IssuersApiController>()::getIssuerById
-                    )
-
-                    post(
-                        "issuers/{issuerId}/renewal",
-                        get<IssuanceApiController>()::renewKey
-                    )
-
-                    get(
-                        "orders/{orderId}",
-                        get<OrdersApiController>()::getOrderById
-                    )
-
-                    get(
-                        "features",
-                        get<FeaturesApiController>()::getFeatures,
-                    )
-                }
             }
             .exception(BadRequestResponse::class.java) { e, ctx ->
                 apiLog.debug(e) {

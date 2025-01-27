@@ -41,8 +41,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.11.0'
 
-    implementation 'io.javalin:javalin:5.4.2'
-    implementation 'io.javalin:javalin-rendering:5.4.2'
+    implementation 'io.javalin:javalin:6.4.0'
+    implementation 'io.javalin:javalin-rendering:6.4.0'
     implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
 
     implementation 'com.github.jasminb:jsonapi-converter:0.12'
