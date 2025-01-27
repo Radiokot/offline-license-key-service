@@ -9,10 +9,8 @@ services:
       #- "./local/log4j.properties:/log4j.properties"
       - "./local/db/:/db/"
       - "./local/keys/:/keys/"
-    environment:
-      - PORT=8042
     ports:
-      - 8042:8042
+      - 8042:8041
     logging:
       driver: "json-file"
       options:
