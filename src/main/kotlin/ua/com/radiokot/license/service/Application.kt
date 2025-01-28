@@ -23,6 +23,8 @@ import ua.com.radiokot.license.service.api.features.FeaturesApiController
 import ua.com.radiokot.license.service.api.issuers.IssuersApiController
 import ua.com.radiokot.license.service.api.issuers.issuance.IssuanceApiController
 import ua.com.radiokot.license.service.api.orders.OrdersApiController
+import ua.com.radiokot.license.service.buy.FormRedirectBuyController
+import ua.com.radiokot.license.service.buy.buyModule
 import ua.com.radiokot.license.service.util.JavalinResponseStatusLogger
 import ua.com.radiokot.license.service.util.KLoggerKoinLogger
 
@@ -43,6 +45,7 @@ object Application : KoinComponent {
 
             modules(
                 apiModule,
+                buyModule,
             )
         }
 
@@ -111,6 +114,10 @@ object Application : KoinComponent {
                     }
                 }
             }
+            .get(
+                "/buy",
+                get<FormRedirectBuyController>()::render,
+            )
             .after { ctx ->
                 ctx.header(Header.SERVER, "olk-svc")
             }

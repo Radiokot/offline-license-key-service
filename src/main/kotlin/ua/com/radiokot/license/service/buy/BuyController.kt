@@ -1,4 +1,4 @@
-package ua.com.radiokot.license.service
+package ua.com.radiokot.license.service.buy
 
 import io.javalin.http.BadRequestResponse
 import io.javalin.http.Context
@@ -7,7 +7,7 @@ import ua.com.radiokot.license.service.features.FeaturesRepository
 import ua.com.radiokot.license.service.turnstile.CloudflareTurnstile
 import java.util.*
 
-class BuyPageController(
+class BuyController(
     private val featuresRepository: FeaturesRepository,
     private val cloudflareTurnstile: CloudflareTurnstile?,
 ) {
