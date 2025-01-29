@@ -25,15 +25,15 @@ class RsaPemEncoding {
             .toString()
 
     /**
-     * @return PKCS#1 encoded key in PEM text format
+     * @return PKCS#8 encoded key in PEM text format
      */
     fun encodePrivate(privateKey: RSAPrivateKey): String =
         StringBuilder()
-            .append(BEGIN_RSA_PRIVATE_KEY)
+            .append(BEGIN_PRIVATE_KEY)
             .append('\n')
             .append(baseEncoder.encodeToString(privateKey.encoded))
             .append('\n')
-            .append(END_RSA_PRIVATE_KEY)
+            .append(END_PRIVATE_KEY)
             .toString()
 
     /**
@@ -54,7 +54,7 @@ class RsaPemEncoding {
                 as RSAPublicKey
 
     /**
-     * @param encodedPrivateKey PKCS#1 encoded key in PEM text format
+     * @param encodedPrivateKey PKCS#8 encoded key in PEM text format
      */
     fun decodePrivate(encodedPrivateKey: String): RSAPrivateKey =
         rsaKeyFactory
@@ -62,8 +62,8 @@ class RsaPemEncoding {
                 PKCS8EncodedKeySpec(
                     baseDecoder.decode(
                         encodedPrivateKey
-                            .substringAfter(BEGIN_RSA_PRIVATE_KEY)
-                            .substringBefore(END_RSA_PRIVATE_KEY)
+                            .substringAfter(BEGIN_PRIVATE_KEY)
+                            .substringBefore(END_PRIVATE_KEY)
                             .trimIndent()
                     )
                 )
@@ -73,7 +73,7 @@ class RsaPemEncoding {
     companion object {
         private const val BEGIN_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----"
         private const val END_PUBLIC_KEY = "-----END PUBLIC KEY-----"
-        private const val BEGIN_RSA_PRIVATE_KEY = "-----BEGIN RSA PRIVATE KEY-----"
-        private const val END_RSA_PRIVATE_KEY = "-----END RSA PRIVATE KEY-----"
+        private const val BEGIN_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----"
+        private const val END_PRIVATE_KEY = "-----END PRIVATE KEY-----"
     }
 }

@@ -88,7 +88,7 @@ internal class RsaPemEncodingTest {
 
         Assert.assertEquals(
             """
-                -----BEGIN RSA PRIVATE KEY-----
+                -----BEGIN PRIVATE KEY-----
                 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQClXWxkUs012mrb
                 xN/Jt1MiwMr32QRS8DhhmxFop007Ny3iKxW9zZqu6gixOElUToDzF6djPuf9eqWY
                 LCtFgMTCTLe/eW7b1s95Hea33Xl+xtVbn+UXdTvopqCGcJCXI/Ux6twnbZxsg2Nu
@@ -115,7 +115,7 @@ internal class RsaPemEncodingTest {
                 DI3Z1SdJisijiiQVD1yaivVrC6jSBg0ufz1H3aR1gEzFvRIGAFdifB2VRiXquSkG
                 PuYVnO/11HLnMgrgbCm0p6xGroJJYGY4w3C+80etsO61nXaVdOLZS5f535CHPYXd
                 oXEDDMnbblI4/6fKsuzlEQ==
-                -----END RSA PRIVATE KEY-----
+                -----END PRIVATE KEY-----
             """.trimIndent(),
             encodedPrivateKey
         )
@@ -197,9 +197,9 @@ internal class RsaPemEncodingTest {
                 )
             ) as RSAPrivateKey
 
-        val decodedPrivateKey=  RsaPemEncoding().decodePrivate(
+        val decodedPrivateKey = RsaPemEncoding().decodePrivate(
             """
-                -----BEGIN RSA PRIVATE KEY-----
+                -----BEGIN PRIVATE KEY-----
                 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQClXWxkUs012mrb
                 xN/Jt1MiwMr32QRS8DhhmxFop007Ny3iKxW9zZqu6gixOElUToDzF6djPuf9eqWY
                 LCtFgMTCTLe/eW7b1s95Hea33Xl+xtVbn+UXdTvopqCGcJCXI/Ux6twnbZxsg2Nu
@@ -226,7 +226,7 @@ internal class RsaPemEncodingTest {
                 DI3Z1SdJisijiiQVD1yaivVrC6jSBg0ufz1H3aR1gEzFvRIGAFdifB2VRiXquSkG
                 PuYVnO/11HLnMgrgbCm0p6xGroJJYGY4w3C+80etsO61nXaVdOLZS5f535CHPYXd
                 oXEDDMnbblI4/6fKsuzlEQ==
-                -----END RSA PRIVATE KEY-----
+                -----END PRIVATE KEY-----
             """.trimIndent()
         )
 
