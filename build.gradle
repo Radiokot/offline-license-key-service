@@ -62,6 +62,7 @@ jar {
 
 shadowJar {
     archiveFileName = 'application.jar'
+    dependsOn test
 }
 
 compileKotlin {
